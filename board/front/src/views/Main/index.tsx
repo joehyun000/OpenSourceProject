@@ -21,7 +21,7 @@ import { BOARD_WRITE_PATH } from 'constant';
 //          component: 메인 페이지          //
 export default function Main() {
 
-  //          component: 메인 상단 컴포넌트          //
+  //          component: 메인 상단 포넌트          //
   const MainTop = () => {
 
     //          state: 주간 Top3 게시물 리스트 상태          //
@@ -64,7 +64,8 @@ export default function Main() {
     //          state: 전체 게시글 리스트 상태          //
     const [boardList, setBoardList] = useState<BoardListItem[]>([]);
     //          state: 페이지네이션 관련 상태          //
-    const {currentPageNumber, setCurrentPageNumber, currentSectionNumber, setCurrentSectionNumber, viewBoardList, viewPageNumberList, totalSection, setBoardList: setPaginationBoardList} = usePagination<BoardListItem>(5);
+    const {currentPageNumber, setCurrentPageNumber, currentSectionNumber, setCurrentSectionNumber,
+        viewBoardList, viewPageNumberList, totalSection, setBoardList: setPaginationBoardList} = usePagination<BoardListItem>(5);
     const [selectedType, setSelectedType] = useState<BoardType>(BoardType.INFORMATION);
 
     //          function: 네비게이트 함수          //
@@ -176,6 +177,8 @@ export default function Main() {
               setCurrentSectionNumber={setCurrentSectionNumber}
               viewPageNumberList={viewPageNumberList}
               totalSection={totalSection}
+              totalCount={boardList.length}
+              countPerPage={5}
             />
           </div>
         </div>

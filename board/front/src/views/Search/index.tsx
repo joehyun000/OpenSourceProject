@@ -21,7 +21,7 @@ export default function Search() {
   //          state: 페이지네이션 관련 상태          //
   const {currentPageNumber, setCurrentPageNumber, currentSectionNumber, setCurrentSectionNumber,
     viewBoardList, viewPageNumberList, totalSection, setBoardList} = usePagination<BoardListItem>(5);
-  //          state: 검색 결과 개수 상태          //
+  //          state: 검색 결��� 개수 상태          //
   const [count, setCount] = useState<number>(0);
   //          state: 연관 검색어 리스트 상태          //
   const [relationWordList, setRelationWordList] = useState<string[]>([]);
@@ -109,6 +109,8 @@ export default function Search() {
             setCurrentSectionNumber={setCurrentSectionNumber}
             viewPageNumberList={viewPageNumberList}
             totalSection={totalSection}
+            totalCount={count}
+            countPerPage={5}
           />
         </div>
         )}
