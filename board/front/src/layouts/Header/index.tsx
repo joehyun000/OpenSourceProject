@@ -249,9 +249,6 @@ export default function Header() {
     <div id='header'>
       <div className='header-container'>
         <div className='header-left-box' onClick={onLogoClickHanlder}>
-          <div className='header-logo-icon-box'>
-            <div className='logo-dark-icon'></div>
-          </div>
           <div className='header-logo-text'>{'WellbeingHub'}</div>
         </div>
         <div className='header-right-box'>
