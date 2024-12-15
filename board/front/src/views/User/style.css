@@ -228,7 +228,20 @@
     color: rgba(0, 0, 0, 0.8);
     font-size: 24px;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    position: relative;
+    width: fit-content;
+    margin-left: 45px;
+}
+
+.calendar-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    border-bottom: 2px solid #62c3f47d;
 }
 
 /* 다른 달의 날짜 (회색 표시) */
@@ -250,7 +263,7 @@
   /* 운동 기록이 있는 날짜에 연두색 동그라미 효과 */
 .react-calendar__tile.highlight-circle {
     position: relative;
-    background-color: #cff9ab; /* 연두색 */
+    background-color: #cff9abb9; /* 연두색 */
     border-radius: 50%; /* 원형 효과 */
     width: 35px; /* 동그라미 크기 */
     height: 35px;
@@ -266,17 +279,15 @@
     z-index: 1; /* 이모지가 동그라미 위에 위치 */
     font-size: 13px; /* 이모지 크기 */
   }
-  
-
-  
 
 .calendar-container {
     width: 600px;
-    background-color: #fff5f5;
+    background-color: #ffffff; /* 달력의 흰색 배경 */
     padding: 30px;
     border-radius: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border: 2px solid #e0e0e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+    position: relative;
+    z-index: 20; /* 그라데이션보다 위에 표시되도록 설정 */
 }
 
 .react-calendar {
@@ -289,7 +300,7 @@
 
 /* 헤더 (년월 표시) */
 .react-calendar__navigation {
-    background: #ffdbdb;
+    background: #c9edffcc;
     border-radius: 15px;
     margin-bottom: 20px;
     padding: 10px;
@@ -463,14 +474,13 @@ body.modal-open {
     border-radius: 25px;
     padding: 25px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border: 2px solid #e0e0e0;
 }
 
 .recent-entries-container h3 {
-    color: #666;
+    color: #000000d4;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #ffdbdb;
+    border-bottom: 2px solid #62c3f488;
     font-size: 1.2em;
 }
 
@@ -483,7 +493,7 @@ body.modal-open {
 .recent-entry-item {
     position: relative;
     padding: 15px;
-    background-color: #fff5f5;
+    background-color: #f4fff0;
     border-radius: 12px;
     margin-bottom: 10px;
     padding-bottom: 35px;
@@ -500,26 +510,9 @@ body.modal-open {
     margin-bottom: 5px;
 }
 
-.delete-entry-button {
-    background-color: #ffdbdb;
-    color: #333;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 11px;
-    line-height: 1.2;
-    opacity: 0; /* 기본적으로 버튼 숨김 */
-    transition: opacity 0.2s ease; /* 부드러운 나타남/사라짐 효과 */
-}
-
 /* hover 시에만 버튼 표시 */
 .recent-entry-item:hover .delete-entry-button {
     opacity: 1;
-}
-
-.delete-entry-button:hover {
-    background-color: #ffc9c9;
 }
 
 .no-entries-message {
@@ -582,7 +575,7 @@ body.modal-open {
     color: #0066cc;  /* 파란색으로 변경 */
 }
 
-/* 선택�� 날짜가 토요일일 때도 파란색 유지 */
+/* 선택한 날짜가 토요일일 때도 파란색 유지 */
 .react-calendar__tile--active.react-calendar__month-view__days__day--weekend:nth-child(7n) {
     color: #0066cc;
 }
@@ -659,7 +652,7 @@ body.modal-open {
   }
   
   .recent-entries-list::-webkit-scrollbar-thumb {
-    background-color: #ffdbdb; /* 스크롤바 색상 */
+    background-color: #e1fed7; /* 스크롤바 색상 */
     border-radius: 4px;
   }
   
@@ -669,7 +662,7 @@ body.modal-open {
   
   /* 삭제 버튼 스타일 */
 .delete-entry-button {
-    background-color: #ffdbdb;
+    background-color: #e1fed7;
     color: #333;
     border: none;
     padding: 5px 10px;
@@ -683,6 +676,36 @@ body.modal-open {
   }
   
   .delete-entry-button:hover {
-    background-color: #ffc9c9;
+    background-color: #cbffb8;
   }
   
+  .calendar-wrapper::before {
+    content: '';
+    position: absolute;
+    bottom: 0px; /* 그라데이션 시작점: 아래쪽 */
+    left: 0;
+    width: 100%;
+    height: 250px; /* 그라데이션의 높이를 설정 */
+    background: linear-gradient(
+        to top, /* 방향: 위에서 아래로 */
+        rgba(79, 70, 229, 0.7), /* 시작 색상과 투명도 */
+        rgba(96, 165, 250, 0.5),
+        rgba(59, 130, 246, 0.3),
+        rgba(255, 255, 255, 0) /* 끝 색상: 완전 투명 */
+    );
+    filter: blur(50px); /* 블러로 부드럽게 표현 */
+    opacity: 1;
+    animation: gradientAnimation 0.8s ease-in;
+    z-index: -1;
+}
+
+@keyframes gradientAnimation {
+    from {
+        opacity: 0;
+        transform: translateY(-20px); /* 위에서 아래로 내려오는 애니메이션 */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
