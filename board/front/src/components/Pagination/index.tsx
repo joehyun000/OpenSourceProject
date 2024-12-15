@@ -27,6 +27,7 @@ export default function Pagination(props: Props) {
   }
   //          event handler: 다음 버튼 클릭 이벤트 처리          //
   const onNextButtonClickHandler = () => {
+
     const lastPage = Math.ceil(props.totalCount / props.countPerPage);
     const nextPage = currentPageNumber + 1;
     

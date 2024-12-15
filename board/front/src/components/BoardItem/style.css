@@ -18,12 +18,12 @@
 
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
 }
 
 .board-list-item-top {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
 }
 
@@ -65,6 +65,13 @@
 
 .board-list-item-middle {
     display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.board-list-item-content-box {
+    flex: 1;
+    display: flex;
     flex-direction: column;
     gap: 5px;
 }
@@ -96,6 +103,7 @@
 .board-list-item-image-box {
     width: 152px;
     height: 152px;
+    flex-shrink: 0;
 }
 
 .board-list-item-image {
@@ -125,11 +133,11 @@
 }
 
 .board-list-item-team-button {
-    padding: 6px 12px;
+    padding: 4px 10px;
     border: none;
     border-radius: 4px;
-    background-color: #0066cc;
-    color: white;
+    background-color: white;
+    color: #0066cc;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
@@ -137,5 +145,5 @@
 }
 
 .board-list-item-team-button:hover {
-    background-color: #0052a3;
+    background-color: white;
 }

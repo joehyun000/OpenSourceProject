@@ -18,6 +18,13 @@ import { useUserStore } from 'stores';
 import { useCookies } from 'react-cookie';
 import { BOARD_WRITE_PATH } from 'constant';
 
+// 변경할 문구 리스트
+const messages = [
+  '운동 기록을 쌓아보세요',
+  '운동 메이트를 구해보세요',
+  '자신의 노하우를 공유해보세요'
+];
+
 //          component: 메인 페이지          //
 export default function Main() {
 
@@ -26,6 +33,8 @@ export default function Main() {
 
     //          state: 주간 Top3 게시물 리스트 상태          //
     const [top3List, setTop3List] = useState<BoardListItem[]>([]);
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+    const [fade, setFade] = useState(true);
 
     //          function: get top 3 board list response 처리 함수          //
     const getTop3BoardListResponse = (responseBody: GetTop3BoardListResponseDto | ResponseDto) => {
@@ -42,11 +51,28 @@ export default function Main() {
       getTop3BoardListRequest().then(getTop3BoardListResponse);
     }, []);
 
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setFade(false);
+        setTimeout(() => {
+          setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
+          setFade(true);
+        }, 500); // 페이드 아웃 시간
+      }, 3000); // 3초마다 변경
+
+      return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 정리
+    }, []);
+
     //          render: 메인 상단 컴포넌트 렌더링          //
     return (
       <div id='main-top-wrapper'>
         <div className='main-top-container'>
-          <div className='main-top-intro'>{'WellbeingHub에서\n다양한 이야기를 나눠보세요'}</div>
+          <div className='main-top-intro'>
+            {'WellbeingHub에서\n'}
+            <span className={`changing-message ${fade ? 'fade-in' : 'fade-out'}`}>
+              {messages[currentMessageIndex]}
+            </span>
+          </div>
           <div className='main-top-contents-box'>
             <div className='main-top-contents-title'>{'주간 TOP 3 게시글'}</div>
             <div className='main-top-contents'>

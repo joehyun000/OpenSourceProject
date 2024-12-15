@@ -26,13 +26,12 @@ const usePagination = <T>(countPerPage: number) => {
     }
     //          function: 보여줄 페이지 리스트 불러오기 함수          //
     const setViewPage = (totalPage: number) => {
-        const FIRST_PAGE_INDEX = 10 * (currentSectionNumber - 1) + 1;
-        const LAST_PAGE_INDEX = 10 * currentSectionNumber;
+        const SECTION_SIZE = 10;
+        const FIRST_PAGE_INDEX = SECTION_SIZE * (currentSectionNumber - 1) + 1;
+        const LAST_PAGE_INDEX = Math.min(SECTION_SIZE * currentSectionNumber, totalPage);
 
         const tmpPageNumberList = [];
-
         for (let pageNumber = FIRST_PAGE_INDEX; pageNumber <= LAST_PAGE_INDEX; pageNumber++) {
-            if (pageNumber > totalPage) break;
             tmpPageNumberList.push(pageNumber);
         }
 
@@ -50,6 +49,8 @@ const usePagination = <T>(countPerPage: number) => {
         setCurrentSectionNumber(1);
         setTotalPage(totalPage);
         setTotalSection(totalSection);
+        setCurrentPageNumber(1);
+        setCurrentSectionNumber(1);
 
         setViewBoard();
         setViewPage(totalPage);
@@ -62,8 +63,13 @@ const usePagination = <T>(countPerPage: number) => {
 
     //          effect: 현재 섹션이 변경될 시 보여줄 페이지 리스트 불러오기          //
     useEffect(() => {
+        // 현재 섹션이 전체 섹션보다 크면 마지막 섹션으로 조정
+        if (currentSectionNumber > totalSection) {
+            setCurrentSectionNumber(totalSection);
+            return;
+        }
         setViewPage(totalPage);
-    } ,[currentSectionNumber]);
+    }, [currentSectionNumber, totalSection]);
 
     return {
         currentPageNumber, 

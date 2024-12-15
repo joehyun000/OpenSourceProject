@@ -35,6 +35,41 @@ const User = () => {
   const [showDiaryModal, setShowDiaryModal] = useState<boolean>(false);
   const [diaryContent, setDiaryContent] = useState<string>('');
   const [diaryEntries, setDiaryEntries] = useState<{[key: string]: string}>({});
+  const tileClassName = ({
+  date,
+  view,
+  activeStartDate,
+}: {
+  date: Date;
+  view: string;
+  activeStartDate?: Date;
+}) => {
+  if (view === 'month') {
+    const currentYear = activeStartDate?.getFullYear();
+    const currentMonth = activeStartDate?.getMonth();
+    const tileYear = date.getFullYear();
+    const tileMonth = date.getMonth();
+
+    // 다른 달의 날짜 처리
+    if (tileYear !== currentYear || tileMonth !== currentMonth) {
+      return 'outside-month';
+    }
+
+    // 요일별 색상 처리
+    const day = date.getDay();
+    if (day === 0) return 'sunday'; // 일요일
+    if (day === 6) return 'saturday'; // 토요일
+
+    // 운동 기록이 있는 날짜에 클래스 추가
+    const dateStr = date.toISOString().split('T')[0];
+    if (diaryEntries[dateStr]) {
+      return 'highlight-circle'; // 새로운 클래스명 추가
+    }
+  }
+  return ''; // 기본값 반환
+};
+
+  
 
   //          function: 네비게이트 함수          //
   const navigator = useNavigate();
@@ -475,83 +510,113 @@ const User = () => {
     }
   }, [isMyPage, fetchExerciseDiaries]);
 
-  //          render: 유저 페이지 렌더링          //
-  return (
-    <div className="user-page-container">
-      <UserInfo />
-      <div className="calendar-section">
-        <div className="calendar-wrapper">
-          <h2 className="calendar-title">운동 일지</h2>
-          <div className="calendar-content-container">
-            <div className="calendar-container">
-              <Calendar
-                onChange={handleDateClick}
-                value={selectedDate}
-                tileContent={tileContent}
-                locale="ko"
-                formatDay={(locale, date) => date.getDate().toString()}
-              />
-            </div>
-            <div className="recent-entries-container">
-              <h3>최근 ��동 기록</h3>
-              <div className="recent-entries-list">
-                {Object.entries(diaryEntries)
-                  .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
-                  .slice(0, 5)
-                  .map(([date, content]) => {
-                    const formatDate = (dateString: string) => {
-                      const date = new Date(dateString);
-                      const year = date.getFullYear();
-                      const month = date.getMonth() + 1;
-                      const day = date.getDate() + 1;
-                      return `${year}년 ${month}월 ${day}일`;
-                    };
+//          render: 유저 페이지 렌더링          //
+return (
+  <div className="user-page-container">
+    <UserInfo />
+    <div className="calendar-section">
+      <div className="calendar-wrapper">
+        <h2 className="calendar-title">운동 일지</h2>
+        <div className="calendar-content-container">
+          <div className="calendar-container">
+            <Calendar
+              onChange={handleDateClick}
+              value={selectedDate}
+              tileContent={tileContent}
+              tileClassName={(args) => tileClassName(args)}
+              locale="ko"
+              formatDay={(locale, date) => date.getDate().toString()}
+            />
+          </div>
+          <div className="recent-entries-container">
+            <h3>최근 운동 기록</h3>
+            <div className="recent-entries-list">
+              {Object.entries(diaryEntries)
+                .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
+                .map(([date, content]) => {
+                  const formatDate = (dateString: string) => {
+                    const date = new Date(dateString);
+                    const year = date.getFullYear();
+                    const month = date.getMonth() + 1;
+                    const day = date.getDate();
+                    return `${year}년 ${month}월 ${day}일`;
+                  };
 
-                    return (
-                      <div key={date} className="recent-entry-item">
-                        <div className="recent-entry-date">
-                          {formatDate(date)}
-                        </div>
-                        <div className="recent-entry-content">
-                          {content.length > 100 ? content.substring(0, 100) + '...' : content}
-                        </div>
+                  // 삭제 이벤트 핸들러
+                  const onDeleteEntry = async () => {
+                    try {
+                      const accessToken = cookies.accessToken;
+                      if (!accessToken) {
+                        navigator(AUTH_PATH);
+                        return;
+                      }
+
+                      // 서버에 삭제 요청
+                      await axios.delete(
+                        `http://localhost:4000/api/v1/exercise-diary/${date}`,
+                        {
+                          headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                          },
+                        }
+                      );
+
+                      // 삭제 후 상태 업데이트
+                      const updatedEntries = { ...diaryEntries };
+                      delete updatedEntries[date];
+                      setDiaryEntries(updatedEntries);
+                    } catch (error) {
+                      console.error('Failed to delete diary entry:', error);
+                      alert('운동 기록 삭제에 실패했습니다.');
+                    }
+                  };
+
+                  return (
+                    <div key={date} className="recent-entry-item">
+                      <div className="recent-entry-date">{formatDate(date)}</div>
+                      <div className="recent-entry-content">
+                        {content.length > 100 ? content.substring(0, 100) + '...' : content}
                       </div>
-                    );
-                  })}
-                {Object.keys(diaryEntries).length === 0 && (
-                  <div className="no-entries-message">
-                    아직 작성된 운동 기록이 없습니다.
-                  </div>
-                )}
-              </div>
+                      <button className="delete-entry-button" onClick={onDeleteEntry}>
+                        삭제
+                      </button>
+                    </div>
+                  );
+                })}
+              {Object.keys(diaryEntries).length === 0 && (
+                <div className="no-entries-message">
+                  아직 작성된 운동 기록이 없습니다.
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
-      {showDiaryModal && (
-        <>
-          <div className="modal-overlay" onClick={handleCloseModal} />
-          <div className="diary-modal">
-            <h3>{selectedDate?.toLocaleDateString()} 운동 기록</h3>
-            <textarea
-              ref={diaryContentRef}
-              defaultValue={diaryContent}
-              placeholder={`오늘의 운동을 기록해보세요...
+    </div>
+    {showDiaryModal && (
+      <>
+        <div className="modal-overlay" onClick={handleCloseModal} />
+        <div className="diary-modal">
+          <h3>{selectedDate?.toLocaleDateString()} 운동 기록</h3>
+          <textarea
+            ref={diaryContentRef}
+            defaultValue={diaryContent}
+            placeholder={`오늘의 운동을 기록해보세요...
 
 예시:
 - 스쿼트 3세트 (12회)
 - 데드리프트 4세트 (10회)
 - 러닝 30분`}
-            />
-            <div className="diary-modal-buttons">
-              <button onClick={handleCloseModal}>취소</button>
-              <button onClick={handleSaveDiary}>저장</button>
-            </div>
+          />
+          <div className="diary-modal-buttons">
+            <button onClick={handleCloseModal}>취소</button>
+            <button onClick={handleSaveDiary}>저장</button>
           </div>
-        </>
-      )}
-      <UserBoardList />
-    </div>
+        </div>
+      </>
+    )}
+    <UserBoardList />
+  </div>
   );
 };
 

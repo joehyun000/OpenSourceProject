@@ -54,8 +54,15 @@ export default function BoardItem({ boardItem }: Props) {
           </div>
         </div>
         <div className='board-list-item-middle'>
-          <div className='board-list-item-title'>{cutString(title, 50)}</div>
-          <div className='board-list-item-contents'>{cutString(content, 130)}</div>
+          <div className='board-list-item-content-box'>
+            <div className='board-list-item-title'>{cutString(title, 50)}</div>
+            <div className='board-list-item-contents'>{cutString(content, 130)}</div>
+          </div>
+          { boardTitleImage !== null && (
+            <div className='board-list-item-image-box'>
+              <div className='board-list-item-image' style={{ backgroundImage: `url(${boardTitleImage})` }}></div>
+            </div>
+          )}
         </div>
         <div className='board-list-item-bottom'>
           <div className='board-list-item-counts'>
@@ -71,11 +78,6 @@ export default function BoardItem({ boardItem }: Props) {
           )}
         </div>
       </div>
-      { boardTitleImage !== null && (
-        <div className='board-list-item-image-box'>
-          <div className='board-list-item-image' style={{ backgroundImage: `url(${boardTitleImage})` }}></div>
-        </div>
-      ) }
     </div>
   )
 }

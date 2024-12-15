@@ -231,6 +231,45 @@
     margin-bottom: 20px;
 }
 
+/* 다른 달의 날짜 (회색 표시) */
+.react-calendar__month-view__days__day.outside-month {
+    color: lightgray !important; /* 회색 */
+    opacity: 0.6; /* 흐리게 */
+  }
+  
+  /* 토요일 스타일 */
+  .react-calendar__month-view__days__day.saturday {
+    color: blue !important;
+  }
+  
+  /* 일요일 스타일 */
+  .react-calendar__month-view__days__day.sunday {
+    color: red !important;
+  }
+
+  /* 운동 기록이 있는 날짜에 연두색 동그라미 효과 */
+.react-calendar__tile.highlight-circle {
+    position: relative;
+    background-color: #cff9ab; /* 연두색 */
+    border-radius: 50%; /* 원형 효과 */
+    width: 35px; /* 동그라미 크기 */
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto; /* 셀 중앙 정렬 */
+  }
+  
+  /* 이모지가 원 안에 위치하도록 조정 */
+  .react-calendar__tile.highlight-circle .diary-icon {
+    position: absolute;
+    z-index: 1; /* 이모지가 동그라미 위에 위치 */
+    font-size: 13px; /* 이모지 크기 */
+  }
+  
+
+  
+
 .calendar-container {
     width: 600px;
     background-color: #fff5f5;
@@ -276,7 +315,7 @@
 
 /* 선택된 날짜 */
 .react-calendar__tile--active {
-    background: #d9f7be !important;
+    background: #e2ffc9 !important;
     color: #333;
     border-radius: 15px;
 }
@@ -442,28 +481,45 @@ body.modal-open {
 }
 
 .recent-entry-item {
+    position: relative;
     padding: 15px;
     background-color: #fff5f5;
     border-radius: 12px;
-    transition: transform 0.2s ease;
-}
-
-.recent-entry-item:hover {
-    transform: translateY(-2px);
+    margin-bottom: 10px;
+    padding-bottom: 35px;
 }
 
 .recent-entry-date {
-    font-size: 0.9em;
-    color: #666;
+    font-weight: bold;
+    color: #333;
     margin-bottom: 8px;
-    font-weight: 600;
 }
 
 .recent-entry-content {
-    font-size: 0.95em;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.delete-entry-button {
+    background-color: #ffdbdb;
     color: #333;
-    line-height: 1.5;
-    white-space: pre-line;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1.2;
+    opacity: 0; /* 기본적으로 버튼 숨김 */
+    transition: opacity 0.2s ease; /* 부드러운 나타남/사라짐 효과 */
+}
+
+/* hover 시에만 버튼 표시 */
+.recent-entry-item:hover .delete-entry-button {
+    opacity: 1;
+}
+
+.delete-entry-button:hover {
+    background-color: #ffc9c9;
 }
 
 .no-entries-message {
@@ -526,7 +582,7 @@ body.modal-open {
     color: #0066cc;  /* 파란색으로 변경 */
 }
 
-/* 선택된 날짜가 토요일일 때도 파란색 유지 */
+/* 선택�� 날짜가 토요일일 때도 파란색 유지 */
 .react-calendar__tile--active.react-calendar__month-view__days__day--weekend:nth-child(7n) {
     color: #0066cc;
 }
@@ -587,3 +643,46 @@ body.modal-open {
     color: #757575 !important;
 }
 
+/* 최근 운동 기록 리스트 스타일 */
+.recent-entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 300px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 세로 스크롤 활성화 */
+    padding-right: 10px; /* 스크롤바와 내용 간격 */
+  }
+  
+  /* 스크롤바 스타일 */
+  .recent-entries-list::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .recent-entries-list::-webkit-scrollbar-thumb {
+    background-color: #ffdbdb; /* 스크롤바 색상 */
+    border-radius: 4px;
+  }
+  
+  .recent-entries-list::-webkit-scrollbar-track {
+    background-color: #f5f5f5; /* 스크롤바 트랙 색상 */
+  }
+  
+  /* 삭제 버튼 스타일 */
+.delete-entry-button {
+    background-color: #ffdbdb;
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+  
+  .delete-entry-button:hover {
+    background-color: #ffc9c9;
+  }
+  
