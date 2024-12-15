@@ -65,6 +65,13 @@
 
 .board-list-item-middle {
     display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.board-list-item-content-box {
+    flex: 1;
+    display: flex;
     flex-direction: column;
     gap: 5px;
 }
@@ -96,6 +103,7 @@
 .board-list-item-image-box {
     width: 152px;
     height: 152px;
+    flex-shrink: 0;
 }
 
 .board-list-item-image {
@@ -138,11 +146,4 @@
 
 .board-list-item-team-button:hover {
     background-color: white;
-}
-
-.board-list-item-right-box {
-    margin-left: auto;
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
 }
