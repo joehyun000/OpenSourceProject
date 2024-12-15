@@ -412,7 +412,7 @@ const User = () => {
       <div id='user-board-wrapper'>
         <div className='user-board-container'>
           <div className='user-board-title-box'>
-            <div className='user-board-title'>{'내 개시물 '}<span className='emphasis'>{count}</span></div>
+            <div className='user-board-title'>{'내 게시물 '}<span className='emphasis'>{count}</span></div>
           </div>
           <div className='user-board-contents-box'>
             {count === 0 ? (
@@ -493,7 +493,7 @@ const User = () => {
               />
             </div>
             <div className="recent-entries-container">
-              <h3>최근 ��동 기록</h3>
+              <h3>최근 운동 기록</h3>
               <div className="recent-entries-list">
                 {Object.entries(diaryEntries)
                   .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
