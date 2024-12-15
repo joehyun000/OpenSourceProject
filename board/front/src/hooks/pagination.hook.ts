@@ -32,13 +32,12 @@ const usePagination = <T>(countPerPage: number) => {
     }
     //          function: 보여줄 페이지 리스트 불러오기 함수          //
     const setViewPage = (totalPage: number) => {
-        const FIRST_PAGE_INDEX = 10 * (currentSectionNumber - 1) + 1;
-        const LAST_PAGE_INDEX = 10 * currentSectionNumber;
+        const SECTION_SIZE = 10;
+        const FIRST_PAGE_INDEX = SECTION_SIZE * (currentSectionNumber - 1) + 1;
+        const LAST_PAGE_INDEX = Math.min(SECTION_SIZE * currentSectionNumber, totalPage);
 
         const tmpPageNumberList = [];
-
         for (let pageNumber = FIRST_PAGE_INDEX; pageNumber <= LAST_PAGE_INDEX; pageNumber++) {
-            if (pageNumber > totalPage) break;
             tmpPageNumberList.push(pageNumber);
         }
 
@@ -47,12 +46,16 @@ const usePagination = <T>(countPerPage: number) => {
 
     //          effect: 전체 게시물 리스트가 변경될 시 작업          //
     useEffect(() => {
-        const totalPage = Math.floor((boardList.length - 1) / countPerPage) + 1;
-        const totalSection = Math.floor((boardList.length - 1) / (countPerPage * 10)) + 1;
-        setCurrentPageNumber(1);
-        setCurrentSectionNumber(1);
+        const totalPage = Math.ceil(boardList.length / countPerPage);
+        // 섹션 크기를 상수로 정의
+        const SECTION_SIZE = 10;
+        // totalSection 계산 로직 수정
+        const totalSection = Math.max(1, Math.ceil(totalPage / SECTION_SIZE));
+        
         setTotalPage(totalPage);
         setTotalSection(totalSection);
+        setCurrentPageNumber(1);
+        setCurrentSectionNumber(1);
 
         setViewBoard();
         setViewPage(totalPage);
@@ -63,8 +66,13 @@ const usePagination = <T>(countPerPage: number) => {
     }, [currentPageNumber]);
     //          effect: 현재 섹션이 변경될 시 보여줄 페이지 리스트 불러오기          //
     useEffect(() => {
+        // 현재 섹션이 전체 섹션보다 크면 마지막 섹션으로 조정
+        if (currentSectionNumber > totalSection) {
+            setCurrentSectionNumber(totalSection);
+            return;
+        }
         setViewPage(totalPage);
-    } ,[currentSectionNumber]);
+    }, [currentSectionNumber, totalSection]);
 
     return {
         currentPageNumber, 

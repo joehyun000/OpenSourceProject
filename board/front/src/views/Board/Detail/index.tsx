@@ -240,7 +240,7 @@ export default function BoardDetail() {
       getCommentListRequest(boardNumber).then(getCommentListResponse);
     }
 
-    //           event handler: 좋아��� 박스 보기 버튼 클릭 이벤트 처리          //
+    //           event handler: 좋아요 박스 보기 버튼 클릭 이벤트 처리          //
     const onShowFavoriteButtonClickHandler = () => {
       setShowFavorite(!showFavorite);
     }

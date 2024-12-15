@@ -25,20 +25,24 @@ export default function Pagination(props: Props) {
   }
   //          event handler: 다음 버튼 클릭 이벤트 처리          //
   const onNextButtonClickHandler = () => {
-    if (currentSectionNumber === totalSection) {
+    if (currentSectionNumber >= totalSection) {
       alert('마지막 섹션입니다.');
       return;
     }
-    setCurrentPageNumber(currentSectionNumber * 10 + 1);
+    // 다음 섹션의 첫 페이지 번호로 이동
+    const nextSectionFirstPage = (currentSectionNumber * 10) + 1;
+    setCurrentPageNumber(nextSectionFirstPage);
     setCurrentSectionNumber(currentSectionNumber + 1);
   }
   //          event handler: 이전 버튼 클릭 이벤트 처리          //
   const onPreviousButtonClickHandler = () => {
-    if (currentSectionNumber === 1) {
+    if (currentSectionNumber <= 1) {
       alert('첫번째 섹션입니다.');
       return;
     }
-    setCurrentPageNumber((currentSectionNumber - 1) * 10);
+    // 이전 섹션의 마지막 페이지 번호로 이동
+    const previousSectionLastPage = ((currentSectionNumber - 1) * 10);
+    setCurrentPageNumber(previousSectionLastPage);
     setCurrentSectionNumber(currentSectionNumber - 1);
   }
 

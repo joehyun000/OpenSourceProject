@@ -120,8 +120,6 @@ export default function BoardUpdate() {
         <div className='board-write-box'>
           <div className='board-write-title-box'>
             <input className='board-write-title-input' type='text' placeholder='제목을 작성해주세요.' value={title} onChange={onTitleChangeHandler} />
-          </div>
-          <div className='board-write-type-box'>
             <select 
               className='board-write-type-select'
               value={boardType}
@@ -130,6 +128,9 @@ export default function BoardUpdate() {
               <option value={BoardType.INFORMATION}>정보 공유</option>
               <option value={BoardType.TEAM}>팀 게시판</option>
             </select>
+          </div>
+          <div className='divider'></div>
+          <div className='board-write-contents-box'>
             {boardType === BoardType.TEAM && (
               <input 
                 className='board-write-team-url-input'
@@ -139,23 +140,35 @@ export default function BoardUpdate() {
                 onChange={onTeamUrlChangeHandler}
               />
             )}
-          </div>
-          <div className='divider'></div>
-          <div className='board-write-contents-box'>
-            <textarea ref={contentsTextAreaRef} className='board-write-contents-textarea' placeholder='본문을 작성해주세요.' spellCheck={false} value={contents} onChange={onContentsChangeHandler} />
-            <input ref={imageInputRef} type='file' accept='image/*' style={{ display: 'none' }} onChange={onImageChangeHandler} />
-            <div className='icon-button' onClick={onImageUploadButtonClickHandler}>
-              <div className='image-box-light-icon'></div>
+            <div className='board-write-textarea-container'>
+              <textarea 
+                ref={contentsTextAreaRef} 
+                className='board-write-contents-textarea' 
+                placeholder='본문을 작성해주세요.' 
+                spellCheck={false} 
+                value={contents} 
+                onChange={onContentsChangeHandler} 
+              />
+              <input 
+                ref={imageInputRef} 
+                type='file' 
+                accept='image/*' 
+                style={{ display: 'none' }} 
+                onChange={onImageChangeHandler} 
+              />
+              <div className='icon-button' onClick={onImageUploadButtonClickHandler}>
+                <div className='image-box-light-icon'></div>
+              </div>
             </div>
           </div>
           <div className='board-write-images-box'>
             {imageUrls.map((imageUrl, index) => (
-            <div className='board-write-image-box'>
-              <img className='board-write-image' src={imageUrl} />
-              <div className='icon-button image-close' onClick={() => onImageCloseButtonClickHandler(index)}>
-                <div className='close-icon'></div>
+              <div className='board-write-image-box' key={index}>
+                <img className='board-write-image' src={imageUrl} />
+                <div className='icon-button image-close' onClick={() => onImageCloseButtonClickHandler(index)}>
+                  <div className='close-icon'></div>
+                </div>
               </div>
-            </div>
             ))}
           </div>
         </div>
