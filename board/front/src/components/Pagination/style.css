@@ -1,6 +1,7 @@
 .pagination-container {
     display: flex;
     gap: 20px;
+    min-height: 24px;
 }
 
 .pagination-change-link-box {
