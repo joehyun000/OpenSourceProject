@@ -30,7 +30,7 @@ export default function BoardItem({ boardItem }: Props) {
     navigator(BOARD_DETAIL_PATH(boardNumber));
   }
 
-  //          event handler: 팀 ��여 버튼 클릭 이벤트 처리          //
+  //          event handler: 팀 참여 버튼 클릭 이벤트 처리          //
   const onTeamJoinClickHandler = (event: React.MouseEvent, url: string) => {
     event.stopPropagation();  // 카드 클릭 이벤트 전파 방지
     const fullUrl = url.startsWith('http') ? url : `https://${url}`;
@@ -49,8 +49,15 @@ export default function BoardItem({ boardItem }: Props) {
             <div className='board-list-item-nickname'>{writerNickname}</div>
             <div className='board-list-item-write-date'>{getWriteDatetimeFormat(writeDatetime)}</div>
           </div>
-          <div className='board-list-item-type'>
-            {boardType === 'TEAM' ? '팀 게시판' : '정보 공유'}
+          <div className='board-list-item-right-box'>
+            { boardTitleImage !== null && (
+              <div className='board-list-item-image-box'>
+                <div className='board-list-item-image' style={{ backgroundImage: `url(${boardTitleImage})` }}></div>
+              </div>
+            )}
+            <div className='board-list-item-type'>
+              {boardType === 'TEAM' ? '팀 게시판' : '정보 공유'}
+            </div>
           </div>
         </div>
         <div className='board-list-item-middle'>
@@ -71,11 +78,6 @@ export default function BoardItem({ boardItem }: Props) {
           )}
         </div>
       </div>
-      { boardTitleImage !== null && (
-        <div className='board-list-item-image-box'>
-          <div className='board-list-item-image' style={{ backgroundImage: `url(${boardTitleImage})` }}></div>
-        </div>
-      ) }
     </div>
   )
 }

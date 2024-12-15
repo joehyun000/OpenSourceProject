@@ -22,17 +22,17 @@
 
 .board-write-title-box {
     width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .board-write-title-input {
-    width: 100%;
-
+    flex: 1;
     border: none;
     outline: none;
     background: none;
-
     color: rgba(0, 0, 0, 1);
-
     font-size: 32px;
     font-weight: 500;
     line-height: 140%;
@@ -40,28 +40,32 @@
 
 .board-write-contents-box {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 
+.board-write-textarea-container {
+    width: 100%;
     display: flex;
     gap: 16px;
 }
 
 .board-write-contents-textarea {
     flex: 1;
-    
     border: none;
     outline: none;
     background: none;
     resize: none;
-
     color: rgba(0, 0, 0, 0.7);
     font-size: 18px;
     font-weight: 500;
     line-height: 150%;
+    padding: 24px 0;
 }
 
 .board-write-images-box {
     width: 100%;
-
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -69,7 +73,6 @@
 
 .board-write-image-box {
     width: 100%;
-
     position: relative;
 }
 
@@ -83,31 +86,28 @@
     right: 20px;
 }
 
-.board-write-type-box {
-    width: 100%;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
 .board-write-type-select {
     padding: 8px 16px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     font-size: 16px;
     outline: none;
+    width: 120px;
+    flex-shrink: 0;
 }
 
 .board-write-team-url-input {
-    flex: 1;
-    padding: 8px 16px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    font-size: 16px;
+    width: 50%;
+    padding: 24px 0;
+    margin-top: -8px;
+    border: none;
     outline: none;
+    background: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .board-write-team-url-input:focus {
-    border-color: rgba(0, 0, 0, 0.2);
+    border-color: transparent;
 }

@@ -82,7 +82,7 @@ export default function BoardDetail() {
       navigator(MAIN_PATH);
     }
 
-    //          event handler: 작성자 클릭 이벤트 처리          //
+    //          event handler: 작성자 클릭 이벤�� 처리          //
     const onNicknameClickHandler = () => {
       if (!board) return;
       navigator(USER_PATH(board.writerEmail));
@@ -177,7 +177,8 @@ export default function BoardDetail() {
     //          state: 좋아요 리스트 상태          //
     const [favoriteList, setFavoriteList] = useState<FavoriteListItem[]>([]);
     //          state: 댓글 리스트 페이지네이션 상태          //
-    const {currentPageNumber, setCurrentPageNumber, currentSectionNumber, setCurrentSectionNumber, viewBoardList, viewPageNumberList, totalSection, setBoardList} = usePagination<CommentListItem>(3);
+    const {currentPageNumber, setCurrentPageNumber, currentSectionNumber, setCurrentSectionNumber, 
+        viewBoardList, viewPageNumberList, totalSection, setBoardList, totalCount, countPerPage} = usePagination<CommentListItem>(3);
     //          state: 댓글 갯수 상태          //
     const [commentsCount, setCommentsCount] = useState<number>(0);
 
@@ -240,7 +241,7 @@ export default function BoardDetail() {
       getCommentListRequest(boardNumber).then(getCommentListResponse);
     }
 
-    //           event handler: 좋아��� 박스 보기 버튼 클릭 이벤트 처리          //
+    //           event handler: 좋아요 박스 보기 버튼 클릭 이벤트 처리          //
     const onShowFavoriteButtonClickHandler = () => {
       setShowFavorite(!showFavorite);
     }
@@ -275,7 +276,7 @@ export default function BoardDetail() {
       postCommentRequest(requestBody, boardNumber, accessToken).then(postCommentResponse);
     }
 
-    //           event handler: 댓글 변경 이벤트 처리          //
+    //           event handler: 댓글 변 이벤트 처리          //
     const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
       const comment = event.target.value;
       setComment(comment);
@@ -374,8 +375,10 @@ export default function BoardDetail() {
               currentSectionNumber={currentSectionNumber}
               setCurrentPageNumber={setCurrentPageNumber}
               setCurrentSectionNumber={setCurrentSectionNumber}
-              totalSection={totalSection}
               viewPageNumberList={viewPageNumberList}
+              totalSection={totalSection}
+              totalCount={commentsCount}
+              countPerPage={3}
             />
           </div>
           {user !== null && (

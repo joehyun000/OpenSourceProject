@@ -14,6 +14,9 @@ import GetLatestBoardListResponseDto from 'apis/dto/response/board/get-latest-bo
 import ResponseDto from 'apis/dto/response';
 import { GetTop3BoardListResponseDto } from 'apis/dto/response/board';
 import { GetPopularListResponseDto } from 'apis/dto/response/search';
+import { useUserStore } from 'stores';
+import { useCookies } from 'react-cookie';
+import { BOARD_WRITE_PATH } from 'constant';
 
 // 변경할 문구 리스트
 const messages = [
@@ -25,7 +28,7 @@ const messages = [
 //          component: 메인 페이지          //
 export default function Main() {
 
-  //          component: 메인 상단 컴포넌트          //
+  //          component: 메인 상단 포넌트          //
   const MainTop = () => {
 
     //          state: 주간 Top3 게시물 리스트 상태          //
@@ -87,11 +90,14 @@ export default function Main() {
     //          state: 전체 게시글 리스트 상태          //
     const [boardList, setBoardList] = useState<BoardListItem[]>([]);
     //          state: 페이지네이션 관련 상태          //
-    const {currentPageNumber, setCurrentPageNumber, currentSectionNumber, setCurrentSectionNumber, viewBoardList, viewPageNumberList, totalSection, setBoardList: setPaginationBoardList} = usePagination<BoardListItem>(5);
+    const {currentPageNumber, setCurrentPageNumber, currentSectionNumber, setCurrentSectionNumber,
+        viewBoardList, viewPageNumberList, totalSection, setBoardList: setPaginationBoardList} = usePagination<BoardListItem>(5);
     const [selectedType, setSelectedType] = useState<BoardType>(BoardType.INFORMATION);
 
     //          function: 네비게이트 함수          //
-    const navagator = useNavigate();
+    const navigator = useNavigate();
+    const { user } = useUserStore();  // 로그인 상태 확인을 위해 추가
+    const [cookies] = useCookies();   // 쿠키 확인을 위해 추가
 
     //          function: get popular list response 처리 함수          //
     const getPopularListResponse = (responseBody: GetPopularListResponseDto | ResponseDto) => {
@@ -117,7 +123,7 @@ export default function Main() {
 
     //          event handler: 인기 검색어 뱃지 클릭 이벤트 처리          //
     const onWordBadgeClickHandler = (word: string) => {
-      navagator(SEARCH_PATH(word));
+      navigator(SEARCH_PATH(word));
     }
 
     //          event handler: 타입 필터 클릭 이벤트 처리          //
@@ -131,6 +137,15 @@ export default function Main() {
       setCurrentSectionNumber(1);
     };
 
+    //          event handler: 글쓰기 버튼 클릭 이벤트 처리          //
+    const onWriteButtonClickHandler = () => {
+        if (!cookies.accessToken) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
+        navigator(BOARD_WRITE_PATH);
+    }
+
     //          effect: 컴포넌트 마운트 시 실행할 함수          //
     useEffect(() => {
       getPopularListRequest().then(getPopularListResponse);
@@ -142,7 +157,12 @@ export default function Main() {
       <div id='main-bottom-wrapper'>
         <div className='main-bottom-container'>
           <div className='main-bottom-header'>
-            <div className='main-bottom-title'>{'최신 게시물'}</div>
+            <div className='main-bottom-title-box'>
+              <div className='main-bottom-title'>{'최신 게시물'}</div>
+              <div className='write-button' onClick={onWriteButtonClickHandler}>
+                글쓰기
+              </div>
+            </div>
             <div className='main-bottom-filter'>
               <div 
                 className={`filter-button ${selectedType === BoardType.INFORMATION ? 'selected' : ''}`}
@@ -183,6 +203,8 @@ export default function Main() {
               setCurrentSectionNumber={setCurrentSectionNumber}
               viewPageNumberList={viewPageNumberList}
               totalSection={totalSection}
+              totalCount={boardList.length}
+              countPerPage={5}
             />
           </div>
         </div>
