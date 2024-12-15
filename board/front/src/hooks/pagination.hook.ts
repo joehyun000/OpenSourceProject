@@ -18,12 +18,6 @@ const usePagination = <T>(countPerPage: number) => {
 
     //          function: 보여줄 게시물 리스트 불러오기 함수          //
     const setViewBoard = () => {
-        // const tmpList = [];
-        // for (let index = 5 * (currentPageNumber - 1); index < 5 * currentPageNumber; index++) {
-        //   if (currentBoardListMock.length === index) break;
-        //   tmpList.push(currentBoardListMock[index]);
-        // }
-
         const FIRST_INDEX = countPerPage * (currentPageNumber - 1);
         const LAST_INDEX = countPerPage * currentPageNumber;
         const tmpList = boardList.filter((item, index) => (index >= FIRST_INDEX && index < LAST_INDEX));
@@ -46,12 +40,13 @@ const usePagination = <T>(countPerPage: number) => {
 
     //          effect: 전체 게시물 리스트가 변경될 시 작업          //
     useEffect(() => {
+        // 전체 페이지 수 계산 수정
         const totalPage = Math.ceil(boardList.length / countPerPage);
-        // 섹션 크기를 상수로 정의
-        const SECTION_SIZE = 10;
-        // totalSection 계산 로직 수정
-        const totalSection = Math.max(1, Math.ceil(totalPage / SECTION_SIZE));
+        // 전체 섹션 수 계산 수정
+        const totalSection = Math.ceil(totalPage / 10);
         
+        setCurrentPageNumber(1);
+        setCurrentSectionNumber(1);
         setTotalPage(totalPage);
         setTotalSection(totalSection);
         setCurrentPageNumber(1);
@@ -60,10 +55,12 @@ const usePagination = <T>(countPerPage: number) => {
         setViewBoard();
         setViewPage(totalPage);
     }, [boardList]);
+
     //          effect: 현재 페이지가 변경될 시 보여줄 게시물 리스트 불러오기          //
     useEffect(() => {
         setViewBoard();
     }, [currentPageNumber]);
+
     //          effect: 현재 섹션이 변경될 시 보여줄 페이지 리스트 불러오기          //
     useEffect(() => {
         // 현재 섹션이 전체 섹션보다 크면 마지막 섹션으로 조정
@@ -83,8 +80,9 @@ const usePagination = <T>(countPerPage: number) => {
         viewPageNumberList,
         totalSection,
         setBoardList,
+        totalCount: boardList.length,
+        countPerPage
     };
-
 }
 
 export default usePagination;

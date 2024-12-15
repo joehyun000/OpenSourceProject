@@ -451,6 +451,8 @@ const User = () => {
               setCurrentSectionNumber={setCurrentSectionNumber}
               viewPageNumberList={viewPageNumberList}
               totalSection={totalSection}
+              totalCount={count}
+              countPerPage={5}
             />
             )}
           </div>
@@ -491,7 +493,7 @@ const User = () => {
               />
             </div>
             <div className="recent-entries-container">
-              <h3>최근 운동 기록</h3>
+              <h3>최근 ��동 기록</h3>
               <div className="recent-entries-list">
                 {Object.entries(diaryEntries)
                   .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
