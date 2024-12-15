@@ -8,6 +8,7 @@ import { getBoardRequest } from 'apis';
 import { GetBoardResponseDto } from 'apis/dto/response/board';
 import ResponseDto from 'apis/dto/response';
 import { MAIN_PATH } from 'constant';
+import { BoardType } from 'types/board.interface';
 
 //          component: 게시물 수정 화면          //
 export default function BoardUpdate() {
@@ -19,9 +20,13 @@ export default function BoardUpdate() {
   //          state: 게시물 번호 path variable 상태          //
   const { boardNumber } = useParams();
   //          state: 게시물 상태          //
-  const { title, setTitle } = useBoardStore();
-  const { contents, setContents } = useBoardStore();
-  const { images, setImages } = useBoardStore();
+  const { 
+    title, setTitle,
+    contents, setContents,
+    images, setImages,
+    boardType, setBoardType,
+    teamUrl, setTeamUrl
+  } = useBoardStore();
   //          state: 게시물 이미지 URL 상태          //
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
@@ -37,9 +42,11 @@ export default function BoardUpdate() {
       return;
     }
     
-    const { title, content, boardImageList } = responseBody as GetBoardResponseDto;
+    const { title, content, boardImageList, boardType, teamUrl } = responseBody as GetBoardResponseDto;
     setTitle(title);
     setContents(content);
+    setBoardType(boardType);
+    setTeamUrl(teamUrl || '');
     convertUrlsToFiles(boardImageList).then(files => setImages(files));
     setImageUrls(boardImageList);
   }
@@ -87,6 +94,17 @@ export default function BoardUpdate() {
     setImages(newImages);
   }
 
+  //          event handler: 게시판 타입 변경 이벤트 처리          //
+  const onBoardTypeChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+    const type = event.target.value as BoardType;
+    setBoardType(type);
+  }
+
+  //          event handler: 팀 URL 변경 이벤트 처리          //
+  const onTeamUrlChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setTeamUrl(event.target.value);
+  }
+
   //          effect: 게시물 번호 path variable이 변경될 때마다 실행될 함수          //
   useEffect(() => {
     if (!boardNumber) return;
@@ -102,6 +120,25 @@ export default function BoardUpdate() {
         <div className='board-write-box'>
           <div className='board-write-title-box'>
             <input className='board-write-title-input' type='text' placeholder='제목을 작성해주세요.' value={title} onChange={onTitleChangeHandler} />
+          </div>
+          <div className='board-write-type-box'>
+            <select 
+              className='board-write-type-select'
+              value={boardType}
+              onChange={onBoardTypeChangeHandler}
+            >
+              <option value={BoardType.INFORMATION}>정보 공유</option>
+              <option value={BoardType.TEAM}>팀 게시판</option>
+            </select>
+            {boardType === BoardType.TEAM && (
+              <input 
+                className='board-write-team-url-input'
+                type='text'
+                placeholder='팀 참여 URL을 입력해주세요.'
+                value={teamUrl}
+                onChange={onTeamUrlChangeHandler}
+              />
+            )}
           </div>
           <div className='divider'></div>
           <div className='board-write-contents-box'>

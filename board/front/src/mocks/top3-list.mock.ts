@@ -1,4 +1,5 @@
 import { BoardListItem } from 'types';
+import { BoardType } from 'types/board.interface';
 
 const top3ListMock: BoardListItem[] = [
     {
@@ -12,6 +13,7 @@ const top3ListMock: BoardListItem[] = [
         writeDatetime: '2023. 08. 24.',
         writerNickname: '깃허브',
         writerProfileImage: null,
+        boardType: BoardType.INFORMATION,
     },
     {
         boardNumber: 2,
@@ -24,6 +26,7 @@ const top3ListMock: BoardListItem[] = [
         writeDatetime: '2023. 08. 24.',
         writerNickname: '깃허브',
         writerProfileImage: null,
+        boardType: BoardType.INFORMATION,
     },
     {
         boardNumber: 3,
@@ -36,6 +39,7 @@ const top3ListMock: BoardListItem[] = [
         writeDatetime: '2023. 08. 24.',
         writerNickname: '깃허브',
         writerProfileImage: null,
+        boardType: BoardType.INFORMATION,
     },
 ];
 

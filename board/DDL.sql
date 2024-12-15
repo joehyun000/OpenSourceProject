@@ -23,6 +23,7 @@ CREATE TABLE `board` (
   `writer_email` varchar(50) COLLATE utf8mb3_bin NOT NULL COMMENT '작성자 이메일',
   `comment_count` int NOT NULL DEFAULT '0' COMMENT '댓글 수',
   `favorite_count` int NOT NULL DEFAULT '0' COMMENT '좋아요 수',
+  `board_type` VARCHAR(20) NOT NULL DEFAULT 'INFORMATION' COMMENT '게시판 타입(INFORMATION/TEAM)',
   PRIMARY KEY (`board_number`),
   UNIQUE KEY `board_number_UNIQUE` (`board_number`),
   KEY `fk_board_user_idx` (`writer_email`),
@@ -125,3 +126,40 @@ ADD CONSTRAINT `comment_parent_FK`
     FOREIGN KEY (`parent_comment_number`) 
     REFERENCES `comment` (`comment_number`) 
     ON DELETE CASCADE;
+
+CREATE TABLE team_board_detail (
+    board_number INT NOT NULL COMMENT '게시물 번호',
+    team_url TEXT NOT NULL COMMENT '팀 참여 URL',
+    PRIMARY KEY (board_number),
+    CONSTRAINT fk_team_board_detail
+        FOREIGN KEY (board_number) 
+        REFERENCES board (board_number)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='팀 게시판 상세 정보';
+
+CREATE OR REPLACE VIEW board_view AS
+SELECT 
+    B.board_number AS board_number,
+    B.title AS title,
+    B.contents AS content,
+    I.board_title_image AS board_title_image,
+    B.view_count AS view_count,
+    B.favorite_count AS favorite_count,
+    B.comment_count AS comment_count,
+    B.write_datetime AS write_datetime,
+    B.writer_email AS writer_email,
+    B.board_type AS board_type,
+    T.team_url AS team_url,
+    U.nickname AS writer_nickname,
+    U.profile_image_url AS writer_profile_image
+FROM board AS B
+INNER JOIN user AS U
+ON B.writer_email = U.email
+LEFT JOIN (
+    SELECT board_number, ANY_VALUE(image_url) AS board_title_image
+    FROM board_image
+    GROUP BY board_number
+) AS I
+ON B.board_number = I.board_number
+LEFT JOIN team_board_detail AS T
+ON B.board_number = T.board_number;

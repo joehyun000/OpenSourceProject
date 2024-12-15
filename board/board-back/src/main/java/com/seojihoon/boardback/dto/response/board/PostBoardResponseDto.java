@@ -26,4 +26,9 @@ public class PostBoardResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 
+    public static ResponseEntity<PostBoardResponseDto> invalidTeamUrl() {
+        PostBoardResponseDto result = new PostBoardResponseDto(ResponseCode.INVALID_TEAM_URL, ResponseMessage.INVALID_TEAM_URL);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
+
 }

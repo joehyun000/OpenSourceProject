@@ -19,4 +19,6 @@ public interface ResponseCode {
     String NOT_ALLOW_NESTED_REPLY = "NNR";
     String NOT_EXIST_COMMENT = "NC";
     String NOT_EXIST_PARENT_COMMENT = "NPC";
+
+    String INVALID_TEAM_URL = "ITU";
 }

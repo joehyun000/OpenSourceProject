@@ -82,7 +82,7 @@ export default function BoardDetail() {
       navigator(MAIN_PATH);
     }
 
-    //          event handler: 작성자 클릭 이벤�� 처리          //
+    //          event handler: 작성자 클릭 이벤트 처리          //
     const onNicknameClickHandler = () => {
       if (!board) return;
       navigator(USER_PATH(board.writerEmail));
@@ -102,6 +102,13 @@ export default function BoardDetail() {
       const accessToken = cookies.accessToken;
       if (!boardNumber || !accessToken) return;
       deleteBoardRequest(boardNumber, accessToken).then(deleteBoardResponse);
+    };
+
+    //          event handler: 팀 URL 클릭 이벤트 처리          //
+    const onTeamUrlClickHandler = (url: string) => {
+      // URL이 http:// 또는 https://로 시작하지 않으면 https:// 추가
+      const fullUrl = url.startsWith('http') ? url : `https://${url}`;
+      window.open(fullUrl, '_blank', 'noopener,noreferrer');
     };
 
     //          effect: 게시물 번호 path variable이 바뀔때 마다 게시물 불러오기          //
@@ -126,11 +133,24 @@ export default function BoardDetail() {
               <div className='board-detail-info-divider'>{'\|'}</div>
               <div className='board-detail-write-date'>{getWriteDatetimeFormat(board?.writeDatetime)}</div>
             </div>
-            {isWriter && (
-            <div className='icon-button' onClick={onMoreButtonClickHandler}>
-              <div className='more-icon'></div>
+            <div className='board-detail-right-box'>
+              <div className='board-detail-type'>
+                {board?.boardType === 'TEAM' ? '팀 게시판' : '정보 공유'}
+              </div>
+              {board?.boardType === 'TEAM' && board?.teamUrl && (
+                <button 
+                  className='board-detail-team-button'
+                  onClick={() => board.teamUrl && onTeamUrlClickHandler(board.teamUrl)}
+                >
+                  팀 참여하기
+                </button>
+              )}
+              {isWriter && (
+                <div className='icon-button' onClick={onMoreButtonClickHandler}>
+                  <div className='more-icon'></div>
+                </div>
+              )}
             </div>
-            )}
             {showMore && (
             <div className='more-box'>
               <div className='more-update-button' onClick={onUpdateButtonClickHandler}>{'수정'}</div>
@@ -220,7 +240,7 @@ export default function BoardDetail() {
       getCommentListRequest(boardNumber).then(getCommentListResponse);
     }
 
-    //           event handler: 좋아요 박스 보기 버튼 클릭 이벤트 처리          //
+    //           event handler: 좋아��� 박스 보기 버튼 클릭 이벤트 처리          //
     const onShowFavoriteButtonClickHandler = () => {
       setShowFavorite(!showFavorite);
     }

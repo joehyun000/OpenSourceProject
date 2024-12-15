@@ -334,3 +334,63 @@
     font-weight: 500;
     line-height: 140%;
 }
+
+.board-detail-type-box {
+    display: flex;
+    align-items: center;
+}
+
+.board-detail-type {
+    padding: 4px 12px;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+    
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.board-detail-team-url-box {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.board-detail-team-button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    background-color: #0066cc;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.board-detail-team-button:hover {
+    background-color: #0052a3;
+}
+
+.board-detail-right-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+}
+
+.board-detail-team-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #0066cc;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.board-detail-team-button:hover {
+    background-color: #0052a3;
+}

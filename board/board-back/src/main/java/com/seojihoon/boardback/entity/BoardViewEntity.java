@@ -3,6 +3,10 @@ package com.seojihoon.boardback.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
+
+import com.seojihoon.boardback.common.BoardType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,4 +30,8 @@ public class BoardViewEntity {
     private String writerEmail;
     private String writerNickname;
     private String writerProfileImage;
+
+    @Enumerated(EnumType.STRING)
+    private BoardType boardType;
+    private String teamUrl;  // null for non-team boards
 }

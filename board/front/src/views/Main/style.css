@@ -1,17 +1,18 @@
 #main-top-wrapper {
     padding: 80px 0 40px;
-
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 .main-top-container {
     width: 1200px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 32px;
+    position: relative;
+    z-index: 1;
 }
 
 .main-top-intro {
@@ -134,3 +135,51 @@
     display: flex;
     justify-content: center;
 }
+
+.main-bottom-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-bottom-filter {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-button {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.filter-button.selected {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+}
+
+.changing-message {
+    display: inline-block;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+

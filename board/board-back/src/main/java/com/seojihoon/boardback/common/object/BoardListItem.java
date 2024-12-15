@@ -3,6 +3,7 @@ package com.seojihoon.boardback.common.object;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.seojihoon.boardback.common.BoardType;
 import com.seojihoon.boardback.entity.BoardViewEntity;
 
 import lombok.Getter;
@@ -22,6 +23,8 @@ public class BoardListItem {
     private String writerEmail;
     private String writerNickname;
     private String writerProfileImage;
+    private BoardType boardType;
+    private String teamUrl;
 
     public BoardListItem(BoardViewEntity boardViewEntity) {
         this.boardNumber = boardViewEntity.getBoardNumber();
@@ -35,6 +38,8 @@ public class BoardListItem {
         this.writerEmail = boardViewEntity.getWriterEmail();
         this.writerNickname = boardViewEntity.getWriterNickname();
         this.writerProfileImage = boardViewEntity.getWriterProfileImage();
+        this.boardType = boardViewEntity.getBoardType();
+        this.teamUrl = boardViewEntity.getTeamUrl();
     }
 
     public static List<BoardListItem> getList(List<BoardViewEntity> boardViewEntities) {

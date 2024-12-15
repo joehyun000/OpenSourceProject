@@ -7,6 +7,7 @@ import { useBoardStore, useUserStore } from 'stores';
 import { LoginUser } from 'types';
 import { fileUploadRequest, patchBoardRequest, postBoardRequest } from 'apis';
 import { PatchBoardRequestDto, PostBoardRequestDto } from 'apis/dto/request/board';
+import { BoardType } from 'types/board.interface';
 
 //          component: 헤더 컴포넌트          //
 export default function Header() {
@@ -117,10 +118,14 @@ export default function Header() {
   //          component: 업로드 버튼 컴포넌트          //
   const UploadButton = () => {
 
-    //          state: ���시물 번호 path variable 상태          //
+    //          state: 게시물 번호 path variable 상태          //
     const { boardNumber } = useParams();
     //          state: 게시물 제목, 내용, 이미지 전역 상태          //
-    const { title, contents, images, resetBoard } = useBoardStore();
+    const { 
+        title, contents, images, 
+        boardType, teamUrl,    // store에서 값 가져오기
+        resetBoard 
+    } = useBoardStore();
 
     //          function: post board response 처리 함수          //
     const postBoardResponse = (code: string) => {
@@ -179,14 +184,22 @@ export default function Header() {
 
       if (isBoardWritePage) {
         const requestBody: PostBoardRequestDto = {
-          title, content: contents, boardImageList
+          title, 
+          content: contents, 
+          boardImageList,
+          boardType,           // store의 boardType 사용
+          teamUrl             // store의 teamUrl 사용
         }
         postBoardRequest(requestBody, accessToken).then(postBoardResponse);
       }
       if (isBoardUpdatePage) {
         if (!boardNumber) return;
         const requestBody: PatchBoardRequestDto = {
-          title, content: contents, boardImageList
+          title, 
+          content: contents, 
+          boardImageList,
+          boardType,           // store의 boardType 사용
+          teamUrl             // store의 teamUrl 사용
         }
         patchBoardRequest(requestBody, boardNumber, accessToken).then(patchBoardResponse);
       }

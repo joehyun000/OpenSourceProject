@@ -7,6 +7,7 @@ import { PatchBoardRequestDto, PostBoardRequestDto, PostCommentRequestDto } from
 import { PostBoardResponseDto, GetLatestBoardListResponseDto, GetBoardResponseDto, GetFavoriteListResponseDto, PutFavoriteResponseDto, GetCommentListResponseDto, PostCommentResponseDto, PatchBoardResponseDto, DeleteBoardResponseDto, GetUserBoardListResponseDto, IncreaseViewCountResponseDto, GetTop3BoardListResponseDto, GetSearchBoardListResponseDto } from './dto/response/board';
 import { PatchNicknameRequestDto, PatchProfileImageRequestDto } from './dto/request/user';
 import { GetPopularListResponseDto, GetRelationListResponseDto } from './dto/response/search';
+import { BoardType } from 'types/board.interface';
 
 // description: Domain URL //
 const DOMAIN = 'http://localhost:4000';
@@ -405,3 +406,20 @@ export const fileUploadRequest = async (data: FormData) => {
         });
     return result;
 }
+
+// description: get board by type API end point //
+const GET_BOARD_BY_TYPE_URL = (boardType: BoardType) => `${API_DOMAIN}/board/type/${boardType}`;
+
+// description: get board by type request //
+export const getBoardsByType = async (boardType: BoardType) => {
+    const result = await axios.get(GET_BOARD_BY_TYPE_URL(boardType))
+        .then(response => {
+            const responseBody = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            const responseBody = error.response.data;
+            return responseBody;
+        });
+    return result;
+};

@@ -20,4 +20,6 @@ public interface ResponseMessage {
     String NOT_ALLOW_NESTED_REPLY = "Nested replies are not allowed.";
 
     String NOT_EXIST_PARENT_COMMENT = "Parent comment does not exist.";
+
+    String INVALID_TEAM_URL = "Team URL is required for team board.";
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.seojihoon.boardback.common.BoardType;
 import com.seojihoon.boardback.dto.request.board.PatchBoardRequestDto;
 import com.seojihoon.boardback.dto.request.board.PostBoardRequestDto;
 import com.seojihoon.boardback.dto.request.board.PostCommentRequestDto;
@@ -27,12 +28,14 @@ import com.seojihoon.boardback.dto.response.board.PatchBoardResponseDto;
 import com.seojihoon.boardback.dto.response.board.PostBoardResponseDto;
 import com.seojihoon.boardback.dto.response.board.PostCommentResponseDto;
 import com.seojihoon.boardback.dto.response.board.PutFavoriteResponseDto;
+import com.seojihoon.boardback.dto.response.board.GetTypeListResponseDto;
 import com.seojihoon.boardback.entity.BoardEntity;
 import com.seojihoon.boardback.entity.BoardImageEntity;
 import com.seojihoon.boardback.entity.BoardViewEntity;
 import com.seojihoon.boardback.entity.CommentEntity;
 import com.seojihoon.boardback.entity.FavoriteEntity;
 import com.seojihoon.boardback.entity.SearchLogEntity;
+import com.seojihoon.boardback.entity.TeamBoardDetailEntity;
 import com.seojihoon.boardback.entity.UserEntity;
 import com.seojihoon.boardback.repository.BoardImageRepository;
 import com.seojihoon.boardback.repository.BoardRepository;
@@ -40,6 +43,7 @@ import com.seojihoon.boardback.repository.BoardViewRepository;
 import com.seojihoon.boardback.repository.CommentRespository;
 import com.seojihoon.boardback.repository.FavoriteRepository;
 import com.seojihoon.boardback.repository.SearchLogRepository;
+import com.seojihoon.boardback.repository.TeamBoardDetailRepository;
 import com.seojihoon.boardback.repository.UserRepository;
 import com.seojihoon.boardback.repository.resultSet.CommentListResultSet;
 import com.seojihoon.boardback.service.BoardService;
@@ -52,6 +56,7 @@ public class BoardServiceImplement implements BoardService {
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+    private final TeamBoardDetailRepository teamBoardDetailRepository;
     private final CommentRespository commentRespository;
     private final FavoriteRepository favoriteRepository;
     private final BoardViewRepository boardViewRepository;
@@ -60,24 +65,30 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
-        
         try {
-
             boolean existedUser = userRepository.existsByEmail(email);
             if (!existedUser) return PostBoardResponseDto.notExistUser();
+
+            if (dto.getBoardType() == BoardType.TEAM) {
+                if (dto.getTeamUrl() == null || dto.getTeamUrl().trim().isEmpty()) {
+                    return PostBoardResponseDto.invalidTeamUrl();
+                }
+            }
 
             BoardEntity boardEntity = new BoardEntity(dto, email);
             boardRepository.save(boardEntity);
 
-            List<String> boardImageList = dto.getBoardImageList();
-            Integer boardNumber = boardEntity.getBoardNumber();
-
-            List<BoardImageEntity> boardImageEntities = new ArrayList<>();
-            for (String boardImage: boardImageList) {
-                BoardImageEntity boardImageEntity = new BoardImageEntity(boardNumber, boardImage);
-                boardImageEntities.add(boardImageEntity);
+            if (dto.getBoardType() == BoardType.TEAM && dto.getTeamUrl() != null) {
+                TeamBoardDetailEntity teamBoardDetail = new TeamBoardDetailEntity(boardEntity, dto.getTeamUrl());
+                teamBoardDetailRepository.save(teamBoardDetail);
             }
 
+            List<String> boardImageList = dto.getBoardImageList();
+            List<BoardImageEntity> boardImageEntities = new ArrayList<>();
+            for (String boardImage: boardImageList) {
+                BoardImageEntity boardImageEntity = new BoardImageEntity(boardEntity.getBoardNumber(), boardImage);
+                boardImageEntities.add(boardImageEntity);
+            }
             boardImageRepository.saveAll(boardImageEntities);
 
         } catch (Exception exception) {
@@ -86,7 +97,6 @@ public class BoardServiceImplement implements BoardService {
         }
 
         return PostBoardResponseDto.success();
-
     }
 
     @Override
@@ -131,24 +141,18 @@ public class BoardServiceImplement implements BoardService {
 
 	@Override
 	public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
-
-        BoardViewEntity boardViewEntity = null;
-        List<BoardImageEntity> boardImageEntities = new ArrayList<>();
-
         try {
-
-            boardViewEntity = boardViewRepository.findByBoardNumber(boardNumber);
+            BoardViewEntity boardViewEntity = boardViewRepository.findByBoardNumber(boardNumber);
             if (boardViewEntity == null) return GetBoardResponseDto.notExistBoard();
 
-            boardImageEntities = boardImageRepository.findByBoardNumber(boardNumber);
+            List<BoardImageEntity> boardImageEntities = boardImageRepository.findByBoardNumber(boardNumber);
+
+            return GetBoardResponseDto.success(boardViewEntity, boardImageEntities);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-
-        return GetBoardResponseDto.success(boardViewEntity, boardImageEntities);
-
 	}
 
     @Override
@@ -317,9 +321,7 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
-        
         try {
-
             boolean existedUser = userRepository.existsByEmail(email);
             if (!existedUser) return PatchBoardResponseDto.notExistUser();
 
@@ -329,11 +331,16 @@ public class BoardServiceImplement implements BoardService {
             boolean equalWriter = boardEntity.getWriterEmail().equals(email);
             if (!equalWriter) return PatchBoardResponseDto.noPermission();
 
+            if (dto.getBoardType() == BoardType.TEAM) {
+                if (dto.getTeamUrl() == null || dto.getTeamUrl().trim().isEmpty()) {
+                    return PatchBoardResponseDto.invalidTeamUrl();
+                }
+            }
+
             boardEntity.patch(dto);
             boardRepository.save(boardEntity);
 
             List<String> boardImageList = dto.getBoardImageList();
-
             boardImageRepository.deleteByBoardNumber(boardNumber);
 
             List<BoardImageEntity> boardImageEntities = new ArrayList<>();
@@ -349,7 +356,6 @@ public class BoardServiceImplement implements BoardService {
         }
 
         return PatchBoardResponseDto.success();
-
     }
 
     @Override
@@ -398,6 +404,24 @@ public class BoardServiceImplement implements BoardService {
 
         return DeleteBoardResponseDto.success();
 
+    }
+
+    @Override
+    public ResponseEntity<? super GetTypeListResponseDto> getBoardsByType(BoardType boardType) {
+        try {
+            List<BoardViewEntity> boardViewEntities = 
+                boardViewRepository.findByBoardTypeOrderByWriteDatetimeDesc(boardType);
+            
+            if (boardViewEntities == null || boardViewEntities.isEmpty()) {
+                return GetTypeListResponseDto.noExistBoardList();
+            }
+
+            return GetTypeListResponseDto.success(boardViewEntities);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
     }
 
 }

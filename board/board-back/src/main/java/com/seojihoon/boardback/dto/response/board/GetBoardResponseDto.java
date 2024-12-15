@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.seojihoon.boardback.common.BoardType;
 import com.seojihoon.boardback.dto.response.ResponseCode;
 import com.seojihoon.boardback.dto.response.ResponseDto;
 import com.seojihoon.boardback.dto.response.ResponseMessage;
@@ -24,6 +25,8 @@ public class GetBoardResponseDto extends ResponseDto {
     private String writerEmail;
     private String writerNickname;
     private String writerProfileImage;
+    private BoardType boardType;
+    private String teamUrl;
 
     private GetBoardResponseDto(String code, String message, BoardViewEntity boardViewEntity, List<BoardImageEntity> boardImageEntities) {
         super(code, message);
@@ -41,6 +44,8 @@ public class GetBoardResponseDto extends ResponseDto {
         this.writerEmail = boardViewEntity.getWriterEmail();
         this.writerNickname = boardViewEntity.getWriterNickname();
         this.writerProfileImage = boardViewEntity.getWriterProfileImage();
+        this.boardType = boardViewEntity.getBoardType();
+        this.teamUrl = boardViewEntity.getTeamUrl();
     }
 
     public static ResponseEntity<GetBoardResponseDto> success(BoardViewEntity boardViewEntity, List<BoardImageEntity> boardImageEntities) {

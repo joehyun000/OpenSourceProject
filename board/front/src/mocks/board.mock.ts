@@ -1,4 +1,5 @@
 import { Board } from "types";
+import { BoardType } from "types/board.interface";
 
 const boardMock: Board = {
     boardNumber: 1,
@@ -12,6 +13,7 @@ const boardMock: Board = {
     writerEmail: 'email@email.com',
     writerNickname: '나는주코야키',
     writerProfileImage: null,
+    boardType: BoardType.INFORMATION,
 };
 
 export default boardMock;

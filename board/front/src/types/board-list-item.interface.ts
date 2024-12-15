@@ -1,3 +1,5 @@
+import { BoardType } from './board.interface';
+
 export default interface BoardListItem {
     boardNumber: number;
     title: string;
@@ -9,4 +11,6 @@ export default interface BoardListItem {
     writeDatetime: string;
     writerNickname: string;
     writerProfileImage: string | null;
+    boardType: BoardType;
+    teamUrl?: string;
 }

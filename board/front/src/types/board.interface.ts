@@ -1,3 +1,8 @@
+export enum BoardType {
+    INFORMATION = 'INFORMATION',
+    TEAM = 'TEAM'
+}
+
 export default interface Board {
     boardNumber: number;
     title: string;
@@ -7,4 +12,6 @@ export default interface Board {
     writerEmail: string;
     writerNickname: string;
     writerProfileImage: string | null;
+    boardType: BoardType;
+    teamUrl?: string;  // optional for team boards
 }

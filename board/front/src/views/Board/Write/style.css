@@ -82,3 +82,32 @@
     top: 20px;
     right: 20px;
 }
+
+.board-write-type-box {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.board-write-type-select {
+    padding: 8px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+}
+
+.board-write-team-url-input {
+    flex: 1;
+    padding: 8px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+}
+
+.board-write-team-url-input:focus {
+    border-color: rgba(0, 0, 0, 0.2);
+}
