@@ -447,7 +447,7 @@ const User = () => {
       <div id='user-board-wrapper'>
         <div className='user-board-container'>
           <div className='user-board-title-box'>
-            <div className='user-board-title'>{'내 개시물 '}<span className='emphasis'>{count}</span></div>
+            <div className='user-board-title'>{'내 게시물 '}<span className='emphasis'>{count}</span></div>
           </div>
           <div className='user-board-contents-box'>
             {count === 0 ? (

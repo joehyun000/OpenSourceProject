@@ -1,149 +1,158 @@
+/* 공통 스타일 변수 */
+:root {
+  --text-primary: rgba(0, 0, 0, 1);
+  --text-secondary: rgba(0, 0, 0, 0.7);
+  --text-tertiary: rgba(0, 0, 0, 0.4);
+  --bg-hover: rgba(0, 0, 0, 0.01);
+  --bg-tag: rgba(0, 0, 0, 0.05);
+  --spacing-base: 8px;
+  --font-small: 12px;
+  --font-medium: 16px;
+  --line-height: 140%;
+}
+
+/* 기본 텍스트 스타일 */
+.text-base {
+  font-size: var(--font-small);
+  font-weight: 400;
+  line-height: var(--line-height);
+  color: var(--text-secondary);
+}
+
+/* 카드 기본 스타일 */
 .board-list-item-card {
-    padding: 24px;
-
-    background-color: rgba(255, 255, 255, 1);
-
-    display: flex;
-    align-items: center;
-    gap: 30px
+  padding: 24px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  gap: 30px;
 }
 
 .board-list-item-card:hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.01);
+  cursor: pointer;
+  background-color: var(--bg-hover);
 }
 
+/* 메인 컨테이너 */
 .board-list-item-main-box {
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
 }
 
+/* 상단 영역 */
 .board-list-item-top {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-base);
 }
 
+/* 프로필 이미지 */
 .board-list-item-profile-box {
-    width: 32px;
-    height: 32px;
+  width: 32px;
+  height: 32px;
 }
 
 .board-list-item-profile-image {
-    border-radius: 50% 50%;
-    width: 100%;
-    height: 100%;
-
-    background-position: 50% 50%;
-    background-size: 100% 100%;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  background-position: 50% 50%;
+  background-size: 100% 100%;
 }
 
+/* 작성자 정보 */
 .board-list-item-write-box {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .board-list-item-nickname {
-    color: rgba(0, 0, 0, 0.7);
-
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 140%;
+  composes: text-base;
+  font-weight: 500;
 }
 
 .board-list-item-write-date {
-    color: rgba(0, 0, 0, 0.4);
-
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 140%;
+  composes: text-base;
+  color: var(--text-tertiary);
 }
 
+/* 중간 영역 */
 .board-list-item-middle {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
+  display: flex;
+  gap: var(--spacing-base);
+  align-items: flex-start;
 }
 
 .board-list-item-content-box {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .board-list-item-title {
-    color: rgba(0, 0, 0, 1);
-
-    font-size: 16px;
-    font-weight: 500;  
-    line-height: 140%;
+  color: var(--text-primary);
+  font-size: var(--font-medium);
+  font-weight: 500;
+  line-height: var(--line-height);
 }
 
 .board-list-item-contents {
-    color: rgba(0, 0, 0, 0.7);
-
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 140%;
+  composes: text-base;
 }
 
-.board-list-item-counts {
-    color: rgba(0, 0, 0, 0.7);
-
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 140%;
-}
-
+/* 이미지 */
 .board-list-item-image-box {
-    width: 152px;
-    height: 152px;
-    flex-shrink: 0;
+  width: 152px;
+  height: 152px;
+  flex-shrink: 0;
 }
 
 .board-list-item-image {
-    border-radius: 10px 10px;
-    width: 100%;
-    height: 100%;
-
-    background-position: 50% 50%;
-    background-size: 100% 100%;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  background-position: 50% 50%;
+  background-size: 100% 100%;
 }
 
+/* 태그 스타일 */
 .board-list-item-type {
-    margin-left: auto;
-    padding: 4px 12px;
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.05);
-    
-    color: rgba(0, 0, 0, 0.7);
-    font-size: 12px;
-    font-weight: 500;
+  margin-left: auto;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: var(--bg-tag);
+  composes: text-base;
+  font-weight: 500;
 }
 
+/* 하단 영역 */
 .board-list-item-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.board-list-item-counts {
+  composes: text-base;
+}
+
+/* 팀 참여 버튼 */
 .board-list-item-team-button {
-    padding: 4px 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: white;
-    color: #0066cc;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: white;
+  color: #0066cc;
+  font-size: var(--font-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .board-list-item-team-button:hover {
-    background-color: white;
+  background-color: white;
 }
