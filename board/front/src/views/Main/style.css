@@ -165,3 +165,24 @@
     background-color: rgba(0, 0, 0, 0.8);
     color: #ffffff;
 }
+
+.main-bottom-title-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.write-button {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.write-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
