@@ -110,7 +110,7 @@ export default function Authentication() {
           {error && (
           <div className='auth-sign-in-error-box'>
             <div className='auth-sign-in-error-message'>
-              {'이메일 주소 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.'}
+              {'이메일 주소 또는 비밀번호를 잘못 입력했습니다.\n입력하신 ���용을 다시 확인해주세요.'}
             </div>
           </div>
           )}
@@ -184,7 +184,7 @@ export default function Authentication() {
 
     //          state: 개인정보동의 상태          //
     const [consent, setConsent] = useState<boolean>(false);
-    //          state: 개인정보동의 에러 상태          //
+    //          state: 개인정보동의 에러 태          //
     const [consentError, setConsentError] = useState<boolean>(false);
 
     //          function: 다음 주소 검색 팝업 오픈 함수          //
@@ -339,6 +339,11 @@ export default function Authentication() {
       signUpRequest(requestBody).then(signUpResponse);
     }
 
+    //          event handler: 로그인 링크 클릭 이벤트 처리          //
+    const onSignInLinkClickHandler = () => {
+        setView('sign-in');
+    }
+
     //          render: sign up 카드 컴포넌트 렌더링         //
     return (
     <div className='auth-card'>
@@ -374,7 +379,15 @@ export default function Authentication() {
         <div className='auth-button' onClick={onSignUpButtonClickHandler}>{'회원가입'}</div>
         </>)}
         <div className='auth-description-box'>
-          <div className='auth-description'>{'이미 계정이 있으신가요? '}<span className='description-emphasis'>{'로그인'}</span></div>
+          <div className='auth-description'>
+            {'이미 계정이 있으신가요? '}
+            <span 
+              className='description-emphasis'
+              onClick={onSignInLinkClickHandler}
+            >
+              {'로그인'}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -383,11 +396,20 @@ export default function Authentication() {
   
   //          render: 인증 페이지 렌더링         //
   return (
-    <div id='auth-wrapper'> 
+    <div id='auth-wrapper'>
+      <video
+        className='background-video'
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src="https://videos.pexels.com/video-files/3125907/3125907-uhd_2560_1440_25fps.mp4" type="video/mp4" />
+      </video>
+      <div className='background-overlay'></div>
       <div className='auth-container'>
         <div className='auth-jumbotron-box'>
           <div className='auth-jumbotron-contents'>
-            <div className='jumbotron-icon'></div>
             <div className='auth-jumbotron-text-box'>
               <div className='auth-jumbotron-text'>{'환영합니다.'}</div>
               <div className='auth-jumbotron-text'>{'Wellbeing Hub 입니다.'}</div>
@@ -399,5 +421,4 @@ export default function Authentication() {
       </div>
     </div>
   );
-  
 }
