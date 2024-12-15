@@ -486,6 +486,8 @@ const User = () => {
               setCurrentSectionNumber={setCurrentSectionNumber}
               viewPageNumberList={viewPageNumberList}
               totalSection={totalSection}
+              totalCount={count}
+              countPerPage={5}
             />
             )}
           </div>
