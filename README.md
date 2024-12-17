@@ -40,30 +40,6 @@ Client <-> REST API <-> Server <-> Database
 1. master branch
 2. develop branch
 
-## 📁 프로젝트 구조
-board/
-├── front/
-│ ├── src/
-│ │ ├── components/ # 재사용 가능한 컴포넌트
-│ │ ├── views/ # 페이지 컴포넌트
-│ │ ├── stores/ # 상태 관리
-│ │ └── apis/ # API 통신 모듈
-│ └── package.json
-│
-└── back/
-└── src/
-└── main/
-├── java/
-│ └── com/board/
-│ ├── config/ # 설정 파일
-│ ├── controller/ # API 엔드포인트
-│ ├── service/ # 비즈니스 로직
-│ ├── repository/ # 데이터 접근 계층
-│ ├── entity/ # 데이터 모델
-│ └── dto/ # 데이터 전송 객체
-└── resources/
-└── application.properties
-
 ## ⚙ 주요 기능
 1. 사용자 인증
    - 회원가입
