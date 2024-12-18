@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.seojihoon.boardback.dto.request.exerciseDiary.PatchExerciseDiaryRequestDto;
 import com.seojihoon.boardback.dto.request.exerciseDiary.PostExerciseDiaryRequestDto;
+import com.seojihoon.boardback.dto.response.exerciseDiary.DeleteExerciseDiaryResponseDto;
 import com.seojihoon.boardback.dto.response.exerciseDiary.GetExerciseDiaryResponseDto;
 import com.seojihoon.boardback.dto.response.exerciseDiary.GetExerciseDiaryListResponseDto;
 
@@ -20,4 +21,7 @@ public interface ExerciseDiaryService {
     
     // 특정 기간의 운동 일지 목록 조회
     ResponseEntity<? super GetExerciseDiaryListResponseDto> getExerciseDiaryList(String email, String startDate, String endDate);
+    
+    // 운동 일지 삭제
+    ResponseEntity<? super DeleteExerciseDiaryResponseDto> deleteExerciseDiary(Integer diaryNumber, String email);
 } 

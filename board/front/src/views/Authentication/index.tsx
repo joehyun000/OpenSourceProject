@@ -12,6 +12,7 @@ import { signInRequest, signUpRequest } from 'apis';
 import { SignInRequestDto, SignUpRequestDto } from 'apis/dto/request/auth';
 import { SignInResponseDto } from 'apis/dto/response/auth';
 import ResponseDto from 'apis/dto/response';
+import backgroundVideo from './assets/background.mp4';
 
 //          component: 인증 페이지          //
 export default function Authentication() {
@@ -203,7 +204,7 @@ export default function Authentication() {
       }
       if (code === 'DT') {
         setTelNumberError(true);
-        setTelNumberErrorMessage('중복되는 휴대 전화번호 입니다.');
+        setTelNumberErrorMessage('중복되는 휴��� 전화번호 입니다.');
       }
       if (code === 'DBE') alert('데이터베이스 오류입니다.');
       if (code !== 'SU') return;
@@ -279,7 +280,7 @@ export default function Authentication() {
         setPasswordError(true);
         setPasswordErrorMessage('비밀번호는 8자 이상 입력해주세요.');
       }
-      // description: 비밀번호 일치 여부 확인 //
+      // description: 비밀번호 ��치 여부 확인 //
       const checkedPasswordCheck = password !== passwordCheck;
       if (checkedPasswordCheck) {
         setPasswordCheckError(true);
@@ -404,7 +405,7 @@ export default function Authentication() {
         muted
         playsInline
       >
-        <source src="https://videos.pexels.com/video-files/3125907/3125907-uhd_2560_1440_25fps.mp4" type="video/mp4" />
+        <source src={backgroundVideo} type="video/mp4" />
       </video>
       <div className='background-overlay'></div>
       <div className='auth-container'>

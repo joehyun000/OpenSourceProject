@@ -273,7 +273,7 @@
     margin: auto; /* 셀 중앙 정렬 */
   }
   
-  /* 이모지가 원 안에 위치하도록 조정 */
+  /* 이모지가 원 안에 위하도록 조정 */
   .react-calendar__tile.highlight-circle .diary-icon {
     position: absolute;
     z-index: 1; /* 이모지가 동그라미 위에 위치 */
@@ -356,16 +356,21 @@
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     z-index: 1050;
-    width: 600px;
+    width: 800px;
     max-width: 90vw;
     max-height: 90vh;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .diary-modal h3 {
     color: #666;
     border-bottom: 2px solid #ffdbdb;
     padding-bottom: 15px;
+    width: 100%;
+    text-align: center;
 }
 
 .diary-modal textarea {
@@ -375,12 +380,11 @@
     border: 2px solid #ffdbdb;
     border-radius: 15px;
     resize: none;
-    margin-bottom: 25px;
+    margin: 20px 0;
     font-size: 16px;
     line-height: 1.8;
     background-color: #fff;
-    transition: border-color 0.2s ease;
-    outline: none;
+    box-sizing: border-box;
 }
 
 .diary-modal textarea:focus {
@@ -398,6 +402,8 @@
     display: flex;
     justify-content: flex-end;
     gap: 12px;
+    padding: 0;
+    width: 100%;
 }
 
 .diary-modal-buttons button {
