@@ -423,3 +423,26 @@ export const getBoardsByType = async (boardType: BoardType) => {
         });
     return result;
 };
+
+// description: delete exercise diary API end point //
+const DELETE_EXERCISE_DIARY_URL = (diaryNumber: number) => 
+    `${API_DOMAIN}/exercise-diary/${diaryNumber}`;
+
+// description: delete exercise diary request //
+export const deleteExerciseDiaryRequest = async (diaryNumber: number, token: string) => {
+    const result = await axios.delete(
+        DELETE_EXERCISE_DIARY_URL(diaryNumber), 
+        authorization(token)
+    )
+        .then(response => {
+            const responseBody: ResponseDto = response.data;
+            const { code } = responseBody;
+            return code;
+        })
+        .catch(error => {
+            const responseBody: ResponseDto = error.response.data;
+            const { code } = responseBody;
+            return code;
+        });
+    return result;
+};

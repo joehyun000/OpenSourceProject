@@ -11,9 +11,66 @@
 ## 사용 언어
 ![React](https://img.shields.io/badge/-React-20232A?logo=react&logoColor=61DAFB&style=flat) ![Java](https://img.shields.io/badge/-Java-orange?logo=java&logoColor=white&style=flat) ![Spring Boot](https://img.shields.io/badge/-Spring%20Boot-6DB33F?logo=spring-boot&logoColor=white&style=flat) ![Spring Framework](https://img.shields.io/badge/-Spring-6DB33F?logo=spring&logoColor=white&style=flat)
 
+# Board Project
+
+## 📌 프로젝트 소개
+게시판 기능을 제공하는 웹 애플리케이션입니다. 사용자 인증, 게시글 CRUD, 이미지 업로드 등의 기능을 제공합니다.
+
+## 🛠 기술 스택
+
+### Frontend
+- React 18.2.0
+- TypeScript
+- React Router DOM
+- Axios
+- React Cookie
+- Zustand (상태관리)
+
+### Backend
+- Spring Boot 2.7.x
+- Spring Security
+- Spring Data JPA
+- JWT (JSON Web Token)
+- MySQL 8.0
+
+## 🏗 시스템 아키텍처
+Client <-> REST API <-> Server <-> Database
+
 ## 깃허브 운영 방식(수정될 수 있음)
 1. master branch
 2. develop branch
+
+## ⚙ 주요 기능
+1. 사용자 인증
+   - 회원가입
+   - 로그인/로그아웃
+   - JWT 기반 인증
+
+2. 게시판
+   - 게시글 작성/조회/수정/삭제
+   - 이미지 업로드
+   - 페이징 처리
+
+## 🚀 시작하기
+
+### 요구사항
+- Node.js
+- Java 11 이상
+- MySQL 8.0
+
+### 설치 및 실행
+
+1. Frontend
+bash
+cd board/front
+npm install
+npm start
+
+2. Backend
+bash
+cd board/back
+./gradlew bootRun
+
 
 위 두가지로 구성된 branch로 운영하며, master branch에는 오류나 충돌이 없는 완전한 코드만 올리도록 합니다.
 그러니 그 외에 개발중이거나 버그가 있는 등등의 코드들은 develop branch에서 관리하도록 합니다.
@@ -25,64 +82,3 @@
 (개발파일은 개발이 시작되면 생성하여 올려두도록 하겠습니다.)
 
 <br/>
-
-***
-
-## 연동하는법
-
-```
-JAVA version: jdk 21
-
-환경변수 설정: C:\Program Files\Java\jdk-21\bin
--> Path에 설정, 자신의 버전과 달라도 스위칭 마음대로 가능하니 편하게.
-```
-
-1. [JAVA-21 버전 설치](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
-
-2. [MySQL 설치](https://dev.mysql.com/downloads/installer/)
-
-3. [node.js 설치](https://nodejs.org/en)
-
-4. VSC 익스텐션 설치:
-```
-MySQL 검색 후 - Weijan Chen의 'MySQL' 설치
-
-SpringBoot 설치
-
-필요시 ERD Editor 설치
-```
-
-### VSC에서 MySQL 초기 세팅
-
-![image](https://github.com/user-attachments/assets/839530de-9a3b-43fd-8a10-436a60314729)
-
-### MySQL 설정
-
-```
-1. 돌고래 모양 아이콘 옆에 '+' 버튼 누르면 쿼리 생성 창이 나옴
-2. CREATE DATABASE board 입력
-3. RUN
-4. Query - '+' 버튼 이름 'DDL', 'DCL', 'DML' 3개 코드 파일 생성
-5. 프로젝트 파일에서 'DDL.sql', 'DCL.sql', 'DML.sql' 코드 복붙
-6. DDL, DCL.sql 에서만 쿼리문 각각 실행 - 오류 발생시 대면할 때 해결
-```
-
-### 프로젝트 실행 방법
-
-```
-1. BoardBackApplication.java 화면 켜놓기
-2. vsc 터미널에서 'cd board-front' 입력
-3. npm run start - 오류 발생 시 대면 때 해결
-4. BoardBackApplication.java Run
-5. npm run start시 홈페이지 자동으로 켜지므로 회원가입, 로그인 테스트
-```
-
-#### 나머지 오류 발생 시 대면 때 해결
-
-2024.11.22 - 영상 챕터 35번까지
-
-[Youtube 영상 링크](https://www.youtube.com/watch?v=NTZgPYlassE&list=PLbq5jHjpmq7q-Td2jOXtpf7SD5c53RqXh)
-
-프로젝트 파일은 카카오톡 업로드(임시) -> Git 으로 관리 예정
-
-

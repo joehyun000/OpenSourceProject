@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.seojihoon.boardback.dto.request.exerciseDiary.PatchExerciseDiaryRequestDto;
 import com.seojihoon.boardback.dto.request.exerciseDiary.PostExerciseDiaryRequestDto;
 import com.seojihoon.boardback.dto.response.ResponseDto;
+import com.seojihoon.boardback.dto.response.exerciseDiary.DeleteExerciseDiaryResponseDto;
 import com.seojihoon.boardback.dto.response.exerciseDiary.GetExerciseDiaryResponseDto;
 import com.seojihoon.boardback.dto.response.exerciseDiary.GetExerciseDiaryListResponseDto;
 import com.seojihoon.boardback.entity.ExerciseDiaryEntity;
@@ -87,6 +88,29 @@ public class ExerciseDiaryServiceImplement implements ExerciseDiaryService {
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
+        }
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteExerciseDiaryResponseDto> deleteExerciseDiary(Integer diaryNumber, String email) {
+        try {
+            // 사용자 존재 여부 확인
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return ResponseDto.validationFailed();
+
+            // 운동 일지 조회 및 권한 확인
+            ExerciseDiaryEntity exerciseDiaryEntity = 
+                exerciseDiaryRepository.findByDiaryNumberAndUserEmail(diaryNumber, email);
+            if (exerciseDiaryEntity == null) return ResponseDto.validationFailed();
+
+            // 운동 일지 삭제
+            exerciseDiaryRepository.delete(exerciseDiaryEntity);
+
+            return DeleteExerciseDiaryResponseDto.success();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return DeleteExerciseDiaryResponseDto.error();
         }
     }
 } 

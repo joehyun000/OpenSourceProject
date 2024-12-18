@@ -8,7 +8,7 @@ import { BoardListItem } from 'types';
 import BoardItem from 'components/BoardItem';
 import Pagination from 'components/Pagination';
 import { AUTH_PATH, BOARD_WRITE_PATH, MAIN_PATH, USER_PATH } from 'constant';
-import { fileUploadRequest, getSignInUserRequest, getUserBoardListRequest, getUserRequest, patchNicknameRequest, patchProfileImageRequest } from 'apis';
+import { fileUploadRequest, getSignInUserRequest, getUserBoardListRequest, getUserRequest, patchNicknameRequest, patchProfileImageRequest, deleteExerciseDiaryRequest } from 'apis';
 import { GetSignInUserResponseDto, GetUserResponseDto } from 'apis/dto/response/user';
 import ResponseDto from 'apis/dto/response';
 import { GetUserBoardListResponseDto } from 'apis/dto/response/board';
@@ -19,6 +19,14 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import type { Value } from 'react-calendar/dist/cjs/shared/types';
 import axios from 'axios';
+
+// DiaryEntry 인터페이스 추가
+interface DiaryEntry {
+  diaryNumber: number;
+  exerciseDate: string;
+  contents: string;
+  writeDatetime: string;
+}
 
 //          component: 유저 페이지          //
 const User = () => {
@@ -34,7 +42,7 @@ const User = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showDiaryModal, setShowDiaryModal] = useState<boolean>(false);
   const [diaryContent, setDiaryContent] = useState<string>('');
-  const [diaryEntries, setDiaryEntries] = useState<{[key: string]: string}>({});
+  const [diaryEntries, setDiaryEntries] = useState<{[key: string]: DiaryEntry}>({});
   const tileClassName = ({
   date,
   view,
@@ -55,7 +63,7 @@ const User = () => {
       return 'outside-month';
     }
 
-    // 요일별 색상 처리
+    // 요일별 색 처리
     const day = date.getDay();
     if (day === 0) return 'sunday'; // 일요일
     if (day === 6) return 'saturday'; // 토요일
@@ -80,7 +88,7 @@ const User = () => {
     setSelectedDate(value);
     setShowDiaryModal(true);
     const dateStr = value.toISOString().split('T')[0];
-    setDiaryContent(diaryEntries[dateStr] || '');
+    setDiaryContent(diaryEntries[dateStr]?.contents || '');
   }, [diaryEntries]);
 
   const handleCloseModal = useCallback(() => {
@@ -115,13 +123,19 @@ const User = () => {
         }
       );
 
-      console.log('Fetch Response:', response.data);
+      // 백엔드 응답 데이터 확인
+      console.log('Raw Response:', response);
+      console.log('Exercise Diary List:', response.data.exerciseDiaryList);
 
       if (response.data.exerciseDiaryList) {
-        const entries: {[key: string]: string} = {};
-        response.data.exerciseDiaryList.forEach((diary: any) => {
-          entries[diary.exerciseDate] = diary.contents;
+        const entries: {[key: string]: DiaryEntry} = {};
+        response.data.exerciseDiaryList.forEach((diary: DiaryEntry) => {
+          // 각 다이어리 엔트리 매핑 확인
+          console.log('Mapping diary entry:', diary);
+          entries[diary.exerciseDate] = diary;
         });
+        // 최종 매핑된 데이터 확인
+        console.log('Final mapped entries:', entries);
         setDiaryEntries(entries);
       }
     } catch (error) {
@@ -533,17 +547,25 @@ return (
             <div className="recent-entries-list">
               {Object.entries(diaryEntries)
                 .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
-                .map(([date, content]) => {
+                .map(([date, diary]) => {
                   const formatDate = (dateString: string) => {
                     const date = new Date(dateString);
                     const year = date.getFullYear();
                     const month = date.getMonth() + 1;
-                    const day = date.getDate();
+                    const day = date.getDate() + 1;
                     return `${year}년 ${month}월 ${day}일`;
                   };
 
                   // 삭제 이벤트 핸들러
-                  const onDeleteEntry = async () => {
+                  const onDeleteEntry = async (diaryNumber: number, date: string) => {
+                    // 삭제 시도 시 전체 데이터 상태 확인
+                    console.log('Current diary entries:', diaryEntries);
+                    console.log('Attempting to delete:', { diaryNumber, date, entry: diaryEntries[date] });
+
+                    if (!window.confirm('정말로 이 운동 기록을 삭제하시겠습니까?')) {
+                      return;
+                    }
+
                     try {
                       const accessToken = cookies.accessToken;
                       if (!accessToken) {
@@ -551,20 +573,16 @@ return (
                         return;
                       }
 
-                      // 서버에 삭제 요청
-                      await axios.delete(
-                        `http://localhost:4000/api/v1/exercise-diary/${date}`,
-                        {
-                          headers: {
-                            Authorization: `Bearer ${accessToken}`,
-                          },
-                        }
-                      );
-
-                      // 삭제 후 상태 업데이트
-                      const updatedEntries = { ...diaryEntries };
-                      delete updatedEntries[date];
-                      setDiaryEntries(updatedEntries);
+                      const code = await deleteExerciseDiaryRequest(diaryNumber, accessToken);
+                      
+                      if (code === 'SU') {
+                        const updatedEntries = { ...diaryEntries };
+                        delete updatedEntries[date];
+                        setDiaryEntries(updatedEntries);
+                        alert('운동 기록이 삭제되었습니다.');
+                      } else {
+                        alert('운동 기록 삭제에 실패했습니다.');
+                      }
                     } catch (error) {
                       console.error('Failed to delete diary entry:', error);
                       alert('운동 기록 삭제에 실패했습니다.');
@@ -575,9 +593,19 @@ return (
                     <div key={date} className="recent-entry-item">
                       <div className="recent-entry-date">{formatDate(date)}</div>
                       <div className="recent-entry-content">
-                        {content.length > 100 ? content.substring(0, 100) + '...' : content}
+                        {diary.contents.length > 100 ? diary.contents.substring(0, 100) + '...' : diary.contents}
                       </div>
-                      <button className="delete-entry-button" onClick={onDeleteEntry}>
+                      <button 
+                        className="delete-entry-button" 
+                        onClick={() => {
+                          console.log('Delete button clicked for:', {
+                            date,
+                            diary,
+                            diaryNumber: diary.diaryNumber
+                          });
+                          onDeleteEntry(diary.diaryNumber, date);
+                        }}
+                      >
                         삭제
                       </button>
                     </div>

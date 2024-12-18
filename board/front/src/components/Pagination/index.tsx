@@ -21,8 +21,12 @@ export default function Pagination(props: Props) {
   const { currentPageNumber, currentSectionNumber, setCurrentPageNumber, setCurrentSectionNumber } = props;
   const { viewPageNumberList, totalSection } = props;
 
+  // 실제 표시할 페이지 번호 리스트 계산
+  const displayPageNumbers = viewPageNumberList.length === 0 ? [1] : viewPageNumberList.filter(pageNumber => pageNumber > 0);
+
   //          event handler: 페이지 번호 클릭 이벤트 처리          //
    const onPageNumberClickHandler = (pageNumber: number) => {
+    if (pageNumber < 1) pageNumber = 1;
     setCurrentPageNumber(pageNumber);
   }
   //          event handler: 다음 버튼 클릭 이벤트 처리          //
@@ -51,7 +55,7 @@ export default function Pagination(props: Props) {
     }
     
     if (prevPage <= (currentSectionNumber - 1) * 10) {
-        setCurrentSectionNumber(currentSectionNumber - 1);
+        setCurrentSectionNumber(Math.max(1, currentSectionNumber - 1));
     }
     setCurrentPageNumber(prevPage);
   }
@@ -66,16 +70,16 @@ export default function Pagination(props: Props) {
         <div className='pagination-change-link-text'>{'이전'}</div>
       </div>
       <div className='pagination-divider'>{'\|'}</div>
-      { viewPageNumberList.map(pageNumber => 
-        pageNumber === currentPageNumber ? (
-          <div key={pageNumber} className='pagination-active-text'>
-            {pageNumber}
-          </div>
-        ) : (
-          <div key={pageNumber} className='pagination-text' onClick={() => onPageNumberClickHandler(pageNumber)}>
-            {pageNumber}
-          </div>
-        )
+      { displayPageNumbers.map(pageNumber => 
+          pageNumber === currentPageNumber ? (
+            <div key={pageNumber} className='pagination-active-text'>
+              {pageNumber}
+            </div>
+          ) : (
+            <div key={pageNumber} className='pagination-text' onClick={() => onPageNumberClickHandler(pageNumber)}>
+              {pageNumber}
+            </div>
+          )
       )}
       <div className='pagination-divider'>{'\|'}</div>
       <div className='pagination-change-link-box' onClick={onNextButtonClickHandler}>

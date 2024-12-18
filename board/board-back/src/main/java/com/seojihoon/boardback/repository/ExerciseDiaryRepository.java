@@ -25,4 +25,7 @@ public interface ExerciseDiaryRepository extends JpaRepository<ExerciseDiaryEnti
         String startDate, 
         String endDate
     );
+    
+    // 특정 사용자의 특정 운동 일지 삭제를 위한 조회
+    ExerciseDiaryEntity findByDiaryNumberAndUserEmail(Integer diaryNumber, String userEmail);
 } 
