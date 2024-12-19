@@ -163,3 +163,5 @@ LEFT JOIN (
 ON B.board_number = I.board_number
 LEFT JOIN team_board_detail AS T
 ON B.board_number = T.board_number;
+
+ALTER TABLE comment ADD COLUMN deleted BOOLEAN DEFAULT false;

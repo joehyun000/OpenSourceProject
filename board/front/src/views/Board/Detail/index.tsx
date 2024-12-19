@@ -165,8 +165,16 @@ export default function BoardDetail() {
         </div>
         <div className='divider'></div>
         <div className='board-detail-top-main'>
+          <div className='board-detail-image-container'>
+            { board?.boardImageList.map(boardImage => 
+              <img 
+                key={boardImage}
+                className='board-detail-main-image' 
+                src={boardImage} 
+              />
+            )}
+          </div>
           <div className='board-detail-main-text'>{board?.content}</div>
-          { board?.boardImageList.map(boardImage => <img className='board-detail-main-image' src={boardImage} />) }
         </div>
       </div>
     )

@@ -150,18 +150,28 @@
     gap: 20px;
 }
 
-.board-detail-main-text {
-    color: rgba(0, 0, 0, 0.7);
-
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 140%;
-
-    white-space: pre-wrap;
+.board-detail-image-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
 }
 
 .board-detail-main-image {
+    max-width: 80%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.board-detail-main-text {
     width: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+    
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 160%;
+    color: rgba(0, 0, 0, 0.8);
 }
 
 #board-detail-bottom {

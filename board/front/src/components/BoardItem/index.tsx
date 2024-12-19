@@ -53,6 +53,7 @@ export default function BoardItem({ boardItem }: Props) {
             {boardType === 'TEAM' ? '팀 게시판' : '정보 공유'}
           </div>
         </div>
+        
         <div className='board-list-item-middle'>
           <div className='board-list-item-content-box'>
             <div className='board-list-item-title'>{cutString(title, 50)}</div>
@@ -64,6 +65,7 @@ export default function BoardItem({ boardItem }: Props) {
             </div>
           )}
         </div>
+
         <div className='board-list-item-bottom'>
           <div className='board-list-item-counts'>
             {`댓글 ${commentCount} · 좋아요 ${favoriteCount} · 조회수 ${viewCount}`}

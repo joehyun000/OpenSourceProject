@@ -133,9 +133,9 @@ export default function CommentItem({
           <div className='reply-input-container'>
             <textarea
               className='reply-input'
+              placeholder='답글을 입력해주세요.'
               value={replyContent}
               onChange={handleReplyContentChange}
-              placeholder='답글을 입력하세요...'
             />
             <div className='reply-button-group'>
               <button 

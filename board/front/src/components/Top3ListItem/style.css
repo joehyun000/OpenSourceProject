@@ -88,10 +88,14 @@
 
 .top3-list-item-contents {
     color: rgba(255, 255, 255, 0.7);
-
     font-size: 12px;
     font-weight: 400;
     line-height: 140%;
+    
+    /* 한 줄로 표시하고 말줄임표 처리를 위한 속성 추가 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .top3-list-item-counts {

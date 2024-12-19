@@ -67,7 +67,7 @@
     line-height: 150%;
 }
 
-.comment-list-item-reply-button {
+.comment-item-reply-button {
     margin-top: 0;
     color: #2196F3;
     font-size: 14px;
@@ -76,57 +76,77 @@
     line-height: 1;
 }
 
-.comment-list-item-reply-button:hover {
+.comment-item-reply-button:hover {
     text-decoration: underline;
 }
 
 .reply-input-container {
-    margin-top: 12px;
-    padding: 12px;
-    background-color: rgba(0, 0, 0, 0.02);
-    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-top: 20px;
 }
 
 .reply-input {
+    border: none;
+    outline: none;
+    background: none;
+    resize: none;
+    overflow: hidden;
+    
     width: 100%;
-    min-height: 80px;
-    padding: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    resize: vertical;
+    min-height: 64px;
+    color: rgba(0, 0, 0, 1);
+    
     font-size: 16px;
     font-weight: 400;
     line-height: 150%;
-    color: rgba(0, 0, 0, 0.7);
 }
 
 .reply-button-group {
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
-    margin-top: 8px;
+    margin-top: 20px;
 }
 
-.reply-submit-button {
-    border: none;
-    background-color: rgba(0, 0, 0, 0.15);
-    color: rgba(0, 0, 0, 0.15);
-    font-size: 16px;
-    font-weight: 500;
-    padding: 12px 24px;
+.comment-item-reply-submit-button {
     border-radius: 46px;
-    cursor: not-allowed;
-    transition: all 0.2s ease;
-}
+    width: 95px;
+    height: 30px;
+    border: none;
 
-.reply-submit-button.active {
-    background-color: #2196F3;
-    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #B1D7FF;
+    color: #0066cc;
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
     cursor: pointer;
 }
 
-.reply-submit-button.active:hover {
-    background-color: #1976D2;
+.comment-item-reply-submit-button:hover {
+    background-color: #9DCAFF;
+}
+
+.comment-item-reply-submit-button-disable {
+    border-radius: 46px;
+    width: 95px;
+    height: 30px;
+    border: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #E8E8E8;
+    color: rgba(0, 0, 0, 0.4);
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
 }
 
 .reply-cancel-button {
@@ -237,6 +257,7 @@
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
+    line-height: 1;
 }
 
 .comment-list-item-reply-button:hover {
@@ -305,4 +326,31 @@
     color: #ff0000;
     font-size: 16px;
     font-weight: 500;
+}
+
+.reply-submit-button {
+    border-radius: 46px;
+    width: 95px;
+    height: 30px;
+    border: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 1);
+
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 140%;
+}
+
+.reply-submit-button.active {
+    background-color: rgba(0, 0, 0, 1);
+    cursor: pointer;
+}
+
+.reply-submit-button.active:hover {
+    background-color: rgba(0, 0, 0, 0.85);
 }
