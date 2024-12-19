@@ -7,7 +7,9 @@ const commentListMock: CommentListItem[] = [
         writeDatetime: '3분 전',
         nickname: '깃허브',
         profileImage: null,
-        parentCommentNumber: null
+        parentCommentNumber: null,
+        userEmail: 'github@gmail.com',
+        deleted: false
     },
     {
         commentNumber: 2,
@@ -15,7 +17,9 @@ const commentListMock: CommentListItem[] = [
         writeDatetime: '3분 전',
         nickname: '깃허브',
         profileImage: null,
-        parentCommentNumber: null
+        parentCommentNumber: null,
+        userEmail: 'github@gmail.com',
+        deleted: false
     },
     {
         commentNumber: 3,
@@ -23,7 +27,9 @@ const commentListMock: CommentListItem[] = [
         writeDatetime: '3분 전',
         nickname: '깃허브',
         profileImage: null,
-        parentCommentNumber: null
+        parentCommentNumber: null,
+        userEmail: 'github@gmail.com',
+        deleted: false
     },
     {
         commentNumber: 4,
@@ -31,7 +37,9 @@ const commentListMock: CommentListItem[] = [
         writeDatetime: '3분 전',
         nickname: '깃허브',
         profileImage: null,
-        parentCommentNumber: null
+        parentCommentNumber: null,
+        userEmail: 'github@gmail.com',
+        deleted: false
     },
     {
         commentNumber: 5,
@@ -39,7 +47,9 @@ const commentListMock: CommentListItem[] = [
         writeDatetime: '3분 전',
         nickname: '깃허브',
         profileImage: null,
-        parentCommentNumber: null
+        parentCommentNumber: null,
+        userEmail: 'github@gmail.com',
+        deleted: false
     },
 ];
 

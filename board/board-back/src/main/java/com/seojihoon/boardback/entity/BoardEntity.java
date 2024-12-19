@@ -91,6 +91,12 @@ public class BoardEntity {
         this.commentCount++;
     }
 
+    public void decreaseCommentCount() {
+        if (this.commentCount > 0) {
+            this.commentCount--;
+        }
+    }
+
     public void increaseFavoriteCount() {
         this.favoriteCount++;
     }

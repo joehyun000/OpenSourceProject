@@ -18,6 +18,8 @@ public class CommentListItem {
     private String content;
     private String writeDatetime;
     private String profileImage;
+    private String userEmail;
+    private boolean deleted;
     private Integer parentCommentNumber;
     private List<CommentListItem> replies;
 
@@ -27,6 +29,8 @@ public class CommentListItem {
         this.content = resultSet.getContent();
         this.writeDatetime = resultSet.getWriteDatetime();
         this.profileImage = resultSet.getProfileImage();
+        this.userEmail = resultSet.getUserEmail();
+        this.deleted = resultSet.getDeleted();
         this.parentCommentNumber = resultSet.getParentCommentNumber();
         this.replies = new ArrayList<>();
     }

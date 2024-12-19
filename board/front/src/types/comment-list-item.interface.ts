@@ -4,6 +4,8 @@ export default interface CommentListItem {
     profileImage: string | null;
     writeDatetime: string;
     content: string;
+    userEmail: string;
+    deleted: boolean;
     parentCommentNumber: number | null;
     replies?: CommentListItem[];  // 대댓글 목록
 }

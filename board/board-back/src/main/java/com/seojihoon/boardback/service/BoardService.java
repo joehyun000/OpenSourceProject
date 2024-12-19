@@ -20,6 +20,7 @@ import com.seojihoon.boardback.dto.response.board.PostBoardResponseDto;
 import com.seojihoon.boardback.dto.response.board.PostCommentResponseDto;
 import com.seojihoon.boardback.dto.response.board.PutFavoriteResponseDto;
 import com.seojihoon.boardback.dto.response.board.GetTypeListResponseDto;
+import com.seojihoon.boardback.dto.response.board.DeleteCommentResponseDto;
 
 public interface BoardService {
     
@@ -42,4 +43,6 @@ public interface BoardService {
     ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email);
 
     ResponseEntity<? super GetTypeListResponseDto> getBoardsByType(BoardType boardType);
+
+    ResponseEntity<? super DeleteCommentResponseDto> deleteComment(Integer commentNumber, String email);
 }

@@ -15,17 +15,37 @@ dayjs.tz.setDefault('Asia/Seoul');
 interface Props {
   commentItem: CommentListItem;
   onReplySubmit: (content: string, parentCommentNumber: number) => void;
-  depth?: number;  // 댓글 깊이 (대댓글 여부 확인)
+  onDeleteComment: (commentNumber: number) => void;
+  currentUserEmail: string | undefined;
+  depth?: number;
 }
 
 //          component: 댓글 리스트 아이템 컴포넌트          //
-export default function CommentItem({ commentItem, onReplySubmit, depth = 0 }: Props) {
+export default function CommentItem({ 
+  commentItem, 
+  onReplySubmit, 
+  onDeleteComment,
+  currentUserEmail,
+  depth = 0
+}: Props) {
 
   //          state: Properties          //
-  const { commentNumber, content, profileImage, writeDatetime, nickname, replies } = commentItem;
+  const { 
+    commentNumber, 
+    content, 
+    profileImage, 
+    writeDatetime, 
+    nickname, 
+    replies,
+    userEmail,  // 댓글 작성자 이메일
+    deleted    // 삭제 여부
+  } = commentItem;
   const [showReplyInput, setShowReplyInput] = useState<boolean>(false);
   const [replyContent, setReplyContent] = useState<string>('');
   const [showReplies, setShowReplies] = useState<boolean>(false);
+  const [showMore, setShowMore] = useState<boolean>(false);
+
+  const isMyComment = currentUserEmail === userEmail;
 
   //          event handler: 대댓글 버튼 클릭 이벤트 처리          //
   const handleReplyClick = () => {
@@ -43,6 +63,11 @@ export default function CommentItem({ commentItem, onReplySubmit, depth = 0 }: P
     onReplySubmit(replyContent, commentNumber);
     setReplyContent('');
     setShowReplyInput(false);
+  };
+
+  //          event handler: 삭제 버튼 클릭 이벤트 처리          //
+  const handleDeleteClick = () => {
+    onDeleteComment(commentNumber);
   };
 
   //          function: 작성일 경과시간 함수          //
@@ -69,25 +94,42 @@ export default function CommentItem({ commentItem, onReplySubmit, depth = 0 }: P
         </div>
         <div className='comment-list-item-nickname'>{nickname}</div>
         <div className='comment-list-item-time'>{getElapsedTime()}</div>
-      </div>
-      <div className='comment-list-item-main'>
-        <div className='comment-list-item-content'>{content}</div>
-        {depth === 0 && (
-          <div className='comment-actions'>
-            <div className='comment-list-item-reply-button' onClick={handleReplyClick}>
-              답글 달기
+        {isMyComment && !deleted && (
+          <div className='more-button-box'>
+            <div className='icon-button' onClick={() => setShowMore(!showMore)}>
+              <div className='more-icon'></div>
             </div>
-            {replies && replies.length > 0 && (
-              <div 
-                className='comment-list-item-toggle-replies' 
-                onClick={() => setShowReplies(!showReplies)}
-              >
-                {showReplies ? '답글 숨기기' : `답글 ${replies.length}개 보기`}
+            {showMore && (
+              <div className='more-box'>
+                <div className='more-item' onClick={handleDeleteClick}>
+                  <div className='more-item-text'>삭제</div>
+                </div>
               </div>
             )}
           </div>
         )}
-        {showReplyInput && (
+      </div>
+      <div className='comment-list-item-main'>
+        {deleted ? (
+          <div className="deleted-comment">삭제된 댓글입니다.</div>
+        ) : (
+          <div className='comment-list-item-content'>{content}</div>
+        )}
+
+        <div className='comment-actions'>
+          {!deleted && depth === 0 && (
+            <div className='comment-list-item-reply-button' onClick={handleReplyClick}>
+              답글 달기
+            </div>
+          )}
+          {depth === 0 && replies && replies.length > 0 && (
+            <div className='comment-list-item-toggle-replies' onClick={() => setShowReplies(!showReplies)}>
+              {showReplies ? '답글 숨기기' : `답글 ${replies.length}개 보기`}
+            </div>
+          )}
+        </div>
+
+        {showReplyInput && !deleted && (
           <div className='reply-input-container'>
             <textarea
               className='reply-input'
@@ -106,6 +148,7 @@ export default function CommentItem({ commentItem, onReplySubmit, depth = 0 }: P
           </div>
         )}
       </div>
+
       {replies && replies.length > 0 && showReplies && (
         <div className='replies-container'>
           {replies.map((reply: CommentListItem) => (
@@ -113,6 +156,8 @@ export default function CommentItem({ commentItem, onReplySubmit, depth = 0 }: P
               key={reply.commentNumber}
               commentItem={reply}
               onReplySubmit={onReplySubmit}
+              onDeleteComment={onDeleteComment}
+              currentUserEmail={currentUserEmail}
               depth={depth + 1}
             />
           ))}

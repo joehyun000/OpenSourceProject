@@ -6,5 +6,7 @@ public interface CommentListResultSet {
     String getProfileImage();
     String getContent();
     String getWriteDatetime();
+    String getUserEmail();
+    boolean getDeleted();
     Integer getParentCommentNumber();
 }

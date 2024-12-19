@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 
 import com.seojihoon.boardback.dto.request.board.PostCommentRequestDto;
 
@@ -30,11 +31,12 @@ import lombok.NoArgsConstructor;
 @Table(name="comment")
 public class CommentEntity {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int commentNumber;
-    private int boardNumber;
-    private String userEmail;
+    private Integer commentNumber;
     private String contents;
     private String writeDatetime;
+    private String userEmail;
+    private Integer boardNumber;
+    private boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_comment_number")
@@ -53,10 +55,19 @@ public class CommentEntity {
         this.contents = dto.getContent();
         this.writeDatetime = writeDatetime;
         this.replies = new ArrayList<>();
+        this.deleted = false;
     }
 
     public void setParentComment(CommentEntity parentComment) {
         this.parentComment = parentComment;
         parentComment.getReplies().add(this);
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public boolean isDeleted() {
+        return this.deleted;
     }
 }

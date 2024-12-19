@@ -4,7 +4,7 @@ import { SignInResponseDto, SignUpResponseDto } from './dto/response/auth';
 import ResponseDto from './dto/response';
 import { GetSignInUserResponseDto, GetUserResponseDto, PatchNicknameResponseDto, PatchProfileImageResponseDto } from './dto/response/user';
 import { PatchBoardRequestDto, PostBoardRequestDto, PostCommentRequestDto } from './dto/request/board';
-import { PostBoardResponseDto, GetLatestBoardListResponseDto, GetBoardResponseDto, GetFavoriteListResponseDto, PutFavoriteResponseDto, GetCommentListResponseDto, PostCommentResponseDto, PatchBoardResponseDto, DeleteBoardResponseDto, GetUserBoardListResponseDto, IncreaseViewCountResponseDto, GetTop3BoardListResponseDto, GetSearchBoardListResponseDto } from './dto/response/board';
+import { PostBoardResponseDto, GetLatestBoardListResponseDto, GetBoardResponseDto, GetFavoriteListResponseDto, PutFavoriteResponseDto, GetCommentListResponseDto, PostCommentResponseDto, PatchBoardResponseDto, DeleteBoardResponseDto, GetUserBoardListResponseDto, IncreaseViewCountResponseDto, GetTop3BoardListResponseDto, GetSearchBoardListResponseDto, DeleteCommentResponseDto } from './dto/response/board';
 import { PatchNicknameRequestDto, PatchProfileImageRequestDto } from './dto/request/user';
 import { GetPopularListResponseDto, GetRelationListResponseDto } from './dto/response/search';
 import { BoardType } from 'types/board.interface';
@@ -436,6 +436,28 @@ export const deleteExerciseDiaryRequest = async (diaryNumber: number, token: str
     )
         .then(response => {
             const responseBody: ResponseDto = response.data;
+            const { code } = responseBody;
+            return code;
+        })
+        .catch(error => {
+            const responseBody: ResponseDto = error.response.data;
+            const { code } = responseBody;
+            return code;
+        });
+    return result;
+};
+
+// description: delete comment API end point //
+const DELETE_COMMENT_URL = (commentNumber: number) => `${API_DOMAIN}/board/comment/${commentNumber}`;
+
+// description: delete comment request //
+export const deleteCommentRequest = async (commentNumber: number, token: string) => {
+    const result = await axios.delete(
+        DELETE_COMMENT_URL(commentNumber),
+        authorization(token)
+    )
+        .then(response => {
+            const responseBody: DeleteCommentResponseDto = response.data;
             const { code } = responseBody;
             return code;
         })

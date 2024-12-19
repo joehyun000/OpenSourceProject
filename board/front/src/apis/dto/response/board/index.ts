@@ -11,6 +11,7 @@ import GetTop3BoardListResponseDto from './get-top-3-board-list.response.dto';
 import IncreaseViewCountResponseDto from './increase-view-count.response.dto';
 import GetSearchBoardListResponseDto from './get-search-board-list.response.dto';
 import GetLatestBoardListResponseDto from './get-latest-board-list.response.dto';
+import DeleteCommentResponseDto from './delete-comment.response.dto';
 
 export type {
     GetBoardResponseDto,
@@ -26,4 +27,5 @@ export type {
     IncreaseViewCountResponseDto,
     GetSearchBoardListResponseDto,
     GetLatestBoardListResponseDto,
+    DeleteCommentResponseDto,
 }

@@ -9,7 +9,7 @@ import { usePagination } from 'hooks';
 import CommentItem from 'components/CommentItem';
 import Pagination from 'components/Pagination';
 import { AUTH_PATH, BOARD_UPDATE_PATH, MAIN_PATH, USER_PATH } from 'constant';
-import { deleteBoardRequest, getBoardRequest, getCommentListRequest, getFavoriteListRequest, increaseViewCountRequest, postCommentRequest, putFavoriteRequest } from 'apis';
+import { deleteBoardRequest, getBoardRequest, getCommentListRequest, getFavoriteListRequest, increaseViewCountRequest, postCommentRequest, putFavoriteRequest, deleteCommentRequest } from 'apis';
 import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto } from 'apis/dto/response/board';
 import ResponseDto from 'apis/dto/response';
 import { useCookies } from 'react-cookie';
@@ -82,7 +82,7 @@ export default function BoardDetail() {
       navigator(MAIN_PATH);
     }
 
-    //          event handler: 작성자 클릭 이벤�� 처리          //
+    //          event handler: 작성자 클릭 이벤트 처리          //
     const onNicknameClickHandler = () => {
       if (!board) return;
       navigator(USER_PATH(board.writerEmail));
@@ -152,11 +152,14 @@ export default function BoardDetail() {
               )}
             </div>
             {showMore && (
-            <div className='more-box'>
-              <div className='more-update-button' onClick={onUpdateButtonClickHandler}>{'수정'}</div>
-              <div className='divider'></div>
-              <div className='more-delete-button' onClick={onDeleteButtonClickHandler}>{'삭제'}</div>
-            </div>
+              <div className='more-box'>
+                <div className='more-item' onClick={onUpdateButtonClickHandler}>
+                  <div className='more-item-text blue'>수정</div>
+                </div>
+                <div className='more-item' onClick={onDeleteButtonClickHandler}>
+                  <div className='more-item-text red'>삭제</div>
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -286,7 +289,7 @@ export default function BoardDetail() {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
 
-    //          effect: 게시물 번호 path variable이 바뀔때 마다 좋아요 및 댓글 리스트 불러오기          //
+    //          effect: 게시물 번호 path variable이 바뀔때 다 좋아요 및 댓글 리스트 불러오기          //
     useEffect(() => {
       if (!boardNumber) {
         alert('잘못된 접근입니다.');
@@ -312,6 +315,31 @@ export default function BoardDetail() {
       };
 
       postCommentRequest(requestBody, boardNumber, accessToken).then(postCommentResponse);
+    };
+
+    // 댓글 삭제 응답 처리 함수 추가
+    const deleteCommentResponse = (code: string) => {
+      if (code === 'VF') alert('잘못된 접근입니다.');
+      if (code === 'NU') alert('존재하지 않는 유저입니다.');
+      if (code === 'NC') alert('존재하지 않는 댓글입니다.');
+      if (code === 'NP') alert('권한이 없습니다.');
+      if (code === 'DBE') alert('데이터베이스 오류입니다.');
+      if (code !== 'SU') return;
+
+      if (!boardNumber) return;
+      getCommentListRequest(boardNumber).then(getCommentListResponse);
+    };
+
+    // 댓글 삭제 핸들러 추가
+    const onDeleteComment = async (commentNumber: number) => {
+      const accessToken = cookies.accessToken;
+      if (!accessToken) {
+        alert('로그인이 필요합니다.');
+        return;
+      }
+      if (!window.confirm('댓글을 삭제하시겠습니까?')) return;
+      
+      deleteCommentRequest(commentNumber, accessToken).then(deleteCommentResponse);
     };
 
     //          render: 게시물 상세보기 하단 컴포넌트 렌더링          //
@@ -363,6 +391,8 @@ export default function BoardDetail() {
                     key={commentItem.commentNumber}
                     commentItem={commentItem}
                     onReplySubmit={onReplySubmit}
+                    onDeleteComment={onDeleteComment}
+                    currentUserEmail={user?.email}
                   />
                 ))}
               </div>

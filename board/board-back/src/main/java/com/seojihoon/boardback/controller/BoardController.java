@@ -33,6 +33,7 @@ import com.seojihoon.boardback.dto.response.board.PutFavoriteResponseDto;
 import com.seojihoon.boardback.service.BoardService;
 import com.seojihoon.boardback.common.BoardType;
 import com.seojihoon.boardback.dto.response.board.GetTypeListResponseDto;
+import com.seojihoon.boardback.dto.response.board.DeleteCommentResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -159,6 +160,16 @@ public class BoardController {
         @PathVariable("boardType") BoardType boardType
     ) {
         ResponseEntity<? super GetTypeListResponseDto> response = boardService.getBoardsByType(boardType);
+        return response;
+    }
+
+    @DeleteMapping("/comment/{commentNumber}")
+    public ResponseEntity<? super DeleteCommentResponseDto> deleteComment(
+        @PathVariable("commentNumber") Integer commentNumber,
+        @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super DeleteCommentResponseDto> response = 
+            boardService.deleteComment(commentNumber, email);
         return response;
     }
 }

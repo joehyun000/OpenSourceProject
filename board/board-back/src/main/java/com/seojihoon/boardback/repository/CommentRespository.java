@@ -22,6 +22,8 @@ public interface CommentRespository extends JpaRepository<CommentEntity, Integer
             "U.profile_image_url AS profileImage, " +
             "C.contents AS content, " +
             "C.write_datetime AS writeDatetime, " +
+            "C.user_email AS userEmail, " +
+            "C.deleted AS deleted, " +
             "C.parent_comment_number AS parentCommentNumber " +
         "FROM comment AS C " +
         "INNER JOIN user AS U " +

@@ -29,6 +29,7 @@ import com.seojihoon.boardback.dto.response.board.PostBoardResponseDto;
 import com.seojihoon.boardback.dto.response.board.PostCommentResponseDto;
 import com.seojihoon.boardback.dto.response.board.PutFavoriteResponseDto;
 import com.seojihoon.boardback.dto.response.board.GetTypeListResponseDto;
+import com.seojihoon.boardback.dto.response.board.DeleteCommentResponseDto;
 import com.seojihoon.boardback.entity.BoardEntity;
 import com.seojihoon.boardback.entity.BoardImageEntity;
 import com.seojihoon.boardback.entity.BoardViewEntity;
@@ -47,6 +48,7 @@ import com.seojihoon.boardback.repository.TeamBoardDetailRepository;
 import com.seojihoon.boardback.repository.UserRepository;
 import com.seojihoon.boardback.repository.resultSet.CommentListResultSet;
 import com.seojihoon.boardback.service.BoardService;
+import com.seojihoon.boardback.common.object.CommentListItem;
 
 import lombok.RequiredArgsConstructor;
 
@@ -178,21 +180,19 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber) {
-        
-        List<CommentListResultSet> resultSets = new ArrayList<>();
-
         try {
             boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
-            if (!existedBoard) return GetCommentListResponseDto.notExistBoard();
+            if (!existedBoard) return GetCommentListResponseDto.noBoard();
 
-            resultSets = commentRespository.findByCommentList(boardNumber);
+            List<CommentListResultSet> resultSets = commentRespository.findByCommentList(boardNumber);
+            List<CommentListItem> commentList = CommentListItem.getList(resultSets);
+
+            return GetCommentListResponseDto.success(commentList);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-
-        return GetCommentListResponseDto.success(resultSets);
     }
 
     @Override
@@ -417,6 +417,40 @@ public class BoardServiceImplement implements BoardService {
             }
 
             return GetTypeListResponseDto.success(boardViewEntities);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteCommentResponseDto> deleteComment(Integer commentNumber, String email) {
+        try {
+            // 사용자 검증
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return DeleteCommentResponseDto.notExistUser();
+
+            // 댓글 존재 여부 확인
+            CommentEntity commentEntity = commentRespository.findById(commentNumber).orElse(null);
+            if (commentEntity == null) return DeleteCommentResponseDto.notExistComment();
+
+            // 댓글 작성자 검증
+            if (!commentEntity.getUserEmail().equals(email)) 
+                return DeleteCommentResponseDto.noPermission();
+
+            // 댓글 삭제 처리 (soft delete)
+            commentEntity.setDeleted(true);
+            commentRespository.save(commentEntity);
+
+            // 게시글의 댓글 수 감소
+            BoardEntity boardEntity = boardRepository.findById(commentEntity.getBoardNumber()).orElse(null);
+            if (boardEntity != null) {
+                boardEntity.decreaseCommentCount();
+                boardRepository.save(boardEntity);
+            }
+
+            return DeleteCommentResponseDto.success();
 
         } catch (Exception exception) {
             exception.printStackTrace();
